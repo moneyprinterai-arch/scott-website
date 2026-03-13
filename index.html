@@ -36,8 +36,34 @@
   <!-- ════════════════ MAIN CONTENT ════════════════ -->
   <main>
 
-    <!-- ──── SECTION 0: HERO ──── -->
+    <!-- ──── SECTION 0: HERO (with dark reveal behind) ──── -->
     <section id="hero" class="section section--hero">
+      <!-- Dark layer sits behind the white panel, revealed as panel slides up -->
+      <div class="hero__dark-reveal" id="dark-info">
+        <a class="logo dark-info__logo" href="#">Sc&#x014D;tt</a>
+        <canvas id="dark-mesh-canvas" class="dark-info__canvas"></canvas>
+        <div class="dark-info__content">
+          <p class="dark-info__body">Sc&#x014D;tt is the most widely integrated digital-to-fiat currency today. Buy, sell, and use Sc&#x014D;tt tokens at our exchange and service providers.</p>
+          <div class="dark-info__stats">
+            <div class="stat">
+              <h3 class="stat__value">$620B</h3>
+              <p class="stat__label">Transactions</p>
+              <p class="stat__desc">Sc&#x014D;tt customers have processed $620B+ worth of transactions</p>
+            </div>
+            <div class="stat">
+              <h3 class="stat__value">7.1M+</h3>
+              <p class="stat__label">Wallets</p>
+              <p class="stat__desc">Over 7.1 million wallet downloads across integrated stores</p>
+            </div>
+          </div>
+        </div>
+        <button class="play-btn dark-info__play-btn" aria-label="Play video">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <circle cx="24" cy="24" r="23" stroke="white" stroke-width="1.5"/>
+            <polygon points="20,16 34,24 20,32" fill="white"/>
+          </svg>
+        </button>
+      </div>
       <div class="white-panel hero-panel">
         <!-- Panel header -->
         <div class="panel-header">
@@ -91,34 +117,7 @@
       </div>
     </section>
 
-    <!-- ──── SECTION 1: DARK INFO ──── -->
-    <section id="dark-info" class="section section--dark section--dark-info">
-      <div class="dark-info__panel">
-        <a class="logo dark-info__logo" href="#">Sc&#x014D;tt</a>
-        <canvas id="dark-mesh-canvas" class="dark-info__canvas"></canvas>
-        <div class="dark-info__content">
-          <p class="dark-info__body">Sc&#x014D;tt is the most widely integrated digital-to-fiat currency today. Buy, sell, and use Sc&#x014D;tt tokens at our exchange and service providers.</p>
-          <div class="dark-info__stats">
-            <div class="stat">
-              <h3 class="stat__value">$620B</h3>
-              <p class="stat__label">Transactions</p>
-              <p class="stat__desc">Sc&#x014D;tt customers have processed $620B+ worth of transactions</p>
-            </div>
-            <div class="stat">
-              <h3 class="stat__value">7.1M+</h3>
-              <p class="stat__label">Wallets</p>
-              <p class="stat__desc">Over 7.1 million wallet downloads across integrated stores</p>
-            </div>
-          </div>
-        </div>
-        <button class="play-btn dark-info__play-btn" aria-label="Play video">
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-            <circle cx="24" cy="24" r="23" stroke="white" stroke-width="1.5"/>
-            <polygon points="20,16 34,24 20,32" fill="white"/>
-          </svg>
-        </button>
-      </div>
-    </section>
+    <!-- Dark info section removed — content now in hero__dark-reveal above -->
 
     <!-- ──── SECTION 2: BE YOUR OWN BANK ──── -->
     <section id="bank" class="section section--dark section--bank">

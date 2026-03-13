@@ -11,85 +11,82 @@ export function initHeroTransition() {
   const heroPanel = document.querySelector('.hero-panel');
   if (!hero || !heroPanel) return;
 
+  // Set dark-info content to initially hidden
+  gsap.set('.dark-info__content', { opacity: 0, y: 40 });
+  gsap.set('.dark-info__stats .stat', { opacity: 0, y: 30 });
+  gsap.set('.dark-info__play-btn', { opacity: 0, scale: 0.5 });
+  gsap.set('.dark-info__logo', { opacity: 0 });
+
+  // Total timeline: 2.0 duration
+  // 0-0.6: panel slides up, hero content fades, sphere fades
+  // 0.3-0.8: dark content fades in
+  // 0.8-2.0: dark section holds (reading time)
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: hero,
       start: 'top top',
-      end: '+=150%',
+      end: '+=250%',
       scrub: 1,
       pin: true,
       anticipatePin: 1,
     },
   });
 
-  // White panel slides up and out
+  // White panel slides up and out (first 30% of total scroll)
   tl.to(heroPanel, {
     yPercent: -100,
-    duration: 1,
+    duration: 0.6,
     ease: 'none',
   })
-  // Hero content fades as panel moves
+  // Hero content fades quickly as panel starts moving
   .to('.hero__content', {
     opacity: 0,
     y: -50,
-    duration: 0.4,
+    duration: 0.2,
   }, 0)
   // Panel header fades
   .to('.hero-panel .panel-header', {
     opacity: 0,
-    duration: 0.3,
+    duration: 0.15,
   }, 0)
-  // Sphere scales up as it's revealed
+  // Hero sphere scales up and fades
   .to('.hero__sphere-wrap', {
-    scale: 1.8,
-    y: -150,
-    opacity: 0.3,
-    duration: 1,
-  }, 0);
+    scale: 1.5,
+    y: -100,
+    opacity: 0,
+    duration: 0.5,
+  }, 0)
+  // Dark-info content fades in as panel clears
+  .to('.dark-info__logo', {
+    opacity: 1,
+    duration: 0.2,
+  }, 0.3)
+  .to('.dark-info__content', {
+    opacity: 1,
+    y: 0,
+    duration: 0.25,
+  }, 0.35)
+  .to('.dark-info__stats .stat', {
+    opacity: 1,
+    y: 0,
+    stagger: 0.08,
+    duration: 0.2,
+  }, 0.4)
+  .to('.dark-info__play-btn', {
+    opacity: 1,
+    scale: 1,
+    duration: 0.2,
+  }, 0.45)
+  // Hold dark section visible until end (empty tween to extend timeline)
+  .to({}, { duration: 1.2 }, 0.8);
 }
 
 /**
- * Dark info section content fades in as user scrolls past the hero.
+ * Dark info reveal is now handled within initHeroTransition.
+ * This function is kept as a no-op for backwards compatibility.
  */
 export function initDarkInfoReveal() {
-  const section = document.querySelector('#dark-info');
-  if (!section) return;
-
-  gsap.from('.dark-info__body', {
-    scrollTrigger: {
-      trigger: section,
-      start: 'top 70%',
-      toggleActions: 'play none none none',
-    },
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-    ease: 'power3.out',
-  });
-
-  gsap.from('.dark-info__stats .stat', {
-    scrollTrigger: {
-      trigger: '.dark-info__stats',
-      start: 'top 80%',
-      toggleActions: 'play none none none',
-    },
-    y: 40,
-    opacity: 0,
-    stagger: 0.2,
-    duration: 0.6,
-    ease: 'power3.out',
-  });
-
-  gsap.from('.dark-info__panel .play-btn', {
-    scrollTrigger: {
-      trigger: '.play-btn',
-      start: 'top 90%',
-    },
-    scale: 0,
-    opacity: 0,
-    duration: 0.5,
-    ease: 'back.out(2)',
-  });
+  // Dark info content animations are now part of the hero transition timeline
 }
 
 /**

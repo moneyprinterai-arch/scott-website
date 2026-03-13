@@ -63,18 +63,18 @@
   pointer-events: none;
 }
 
-/* ── Sphere glow — warm amber bloom from upper-right quadrant ── */
+/* ── Sphere glow — warm amber bloom from upper-left quadrant ── */
 .hero__sphere-wrap::after {
   content: '';
   position: absolute;
-  top: 10%;
-  right: 15%;
-  width: 400px;
-  height: 400px;
+  top: 5%;
+  left: 10%;
+  width: 500px;
+  height: 500px;
   background: radial-gradient(
     ellipse at center,
-    rgba(212, 135, 10, 0.2) 0%,
-    rgba(200, 120, 10, 0.08) 40%,
+    rgba(232, 160, 48, 0.15) 0%,
+    rgba(200, 120, 10, 0.06) 40%,
     transparent 70%
   );
   pointer-events: none;

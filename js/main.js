@@ -50,11 +50,15 @@ document.addEventListener('DOMContentLoaded', () => {
           const navCanvas = document.getElementById('nav-sphere');
           if (navCanvas) {
             spheres.nav = create(navCanvas, {
-              particleCount: 5000,
-              radius: 3.0,
-              rotationSpeed: 0.0005,
-              cameraZ: 5,
-              lightDirection: [0.5, 0.4, 0.7],
+              rows: 80,
+              colsBase: 160,
+              radius: 1,
+              rotationSpeed: 0.0008,
+              waveAmplitude: 0.03,
+              cameraZ: 2.6,
+              lightDirection: [-1.0, 0.8, 0.5],
+              basePointSize: 3.0,
+              useAdditiveBlending: true,
             });
           }
         } else {
@@ -71,9 +75,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const sidebar = document.querySelector('.sidebar');
   const sidebarLabel = document.querySelector('[data-sidebar-label]');
   if (sidebarLabel && sidebar) {
+    // Hero scroll progress controls dark/light switch during transition
+    const heroEl = document.getElementById('hero');
+    if (heroEl) {
+      ScrollTrigger.create({
+        trigger: heroEl,
+        start: 'top top',
+        end: '+=250%',
+        onUpdate: (self) => {
+          const isDark = self.progress > 0.2;
+          sidebar.classList.toggle('sidebar--dark', isDark);
+          sidebarLabel.textContent = '01. Introduction';
+        },
+        onLeaveBack: () => {
+          sidebar.classList.remove('sidebar--dark');
+          sidebarLabel.textContent = '01. Introduction';
+        },
+      });
+    }
+
+    // Remaining sections (after hero/dark-info transition)
     const sections = {
-      hero: { label: '01. Introduction', dark: false },
-      'dark-info': { label: '01. Introduction', dark: true },
       bank: { label: '02. Features', dark: true },
       cards: { label: '02. Features', dark: true },
       statistics: { label: '03. Numbers', dark: false },
@@ -106,24 +128,32 @@ document.addEventListener('DOMContentLoaded', () => {
       const heroCanvas = document.getElementById('hero-sphere');
       if (heroCanvas) {
         spheres.hero = create(heroCanvas, {
-          particleCount: 6000,
-          radius: 2.8,
-          rotationSpeed: 0.0006,
-          cameraZ: 5,
-          lightDirection: [0.6, 0.5, 0.7], // upper-right
-          useAdditiveBlending: false, // normal blending on white bg
+          rows: 100,
+          colsBase: 220,
+          radius: 1,
+          rotationSpeed: 0.001,
+          waveAmplitude: 0.03,
+          waveSpeed: 1.5,
+          cameraZ: 2.5,
+          lightDirection: [-1.0, 0.8, 0.5],
+          basePointSize: 2.8,
+          useAdditiveBlending: false,
         });
       }
 
       const darkCanvas = document.getElementById('dark-mesh-canvas');
       if (darkCanvas) {
         spheres.dark = create(darkCanvas, {
-          particleCount: 6000,
-          radius: 3.2,
-          rotationSpeed: 0.0004,
-          noiseAmplitude: 0.1,
-          cameraZ: 4.5,
-          lightDirection: [-0.6, 0.4, 0.7], // upper-LEFT (facing content)
+          rows: 100,
+          colsBase: 220,
+          radius: 1,
+          rotationSpeed: 0.0008,
+          waveAmplitude: 0.03,
+          waveSpeed: 1.5,
+          cameraZ: 2.5,
+          lightDirection: [-1.0, 0.8, 0.5],
+          basePointSize: 2.8,
+          useAdditiveBlending: true,
         });
       }
 

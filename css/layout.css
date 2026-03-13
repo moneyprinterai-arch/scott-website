@@ -116,10 +116,28 @@
 /* ── Hero Section ── */
 .section--hero {
   z-index: 2;
+  position: relative;
+}
+
+/* Dark reveal layer — sits behind the white panel, fills the hero viewport */
+.hero__dark-reveal {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(ellipse at 70% 50%, rgba(160, 82, 26, 0.08) 0%, transparent 50%),
+    #1A0503;
+  display: flex;
+  align-items: center;
+  padding: var(--space-2xl) var(--panel-padding-x);
+  padding-left: calc(var(--sidebar-width) + var(--panel-padding-x));
+  overflow: hidden;
+  border-radius: 0;
 }
 
 .hero-panel {
   position: relative;
+  z-index: 2;
   will-change: transform;
 }
 
@@ -155,10 +173,10 @@
 
 .hero__sphere-wrap {
   position: absolute;
-  bottom: -20%;
-  left: 10%;
-  width: 70%;
-  height: 90%;
+  left: 5%;
+  bottom: -75%;
+  width: 90%;
+  aspect-ratio: 1 / 1;
   pointer-events: none;
 }
 
@@ -175,24 +193,7 @@
   color: var(--color-text-secondary);
 }
 
-/* ── Dark Info Section ── */
-.section--dark-info {
-  z-index: 1;
-  margin-top: 0;
-}
-
-.dark-info__panel {
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-  border-radius: 0;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  padding: var(--space-2xl) var(--panel-padding-x);
-  padding-left: calc(var(--sidebar-width) + var(--panel-padding-x));
-  background: #0d0000;
-}
+/* ── Dark Info (inside hero__dark-reveal) ── */
 
 .dark-info__canvas {
   position: absolute;
@@ -211,7 +212,7 @@
 .dark-info__logo {
   position: absolute;
   top: var(--space-lg);
-  left: var(--panel-padding-x);
+  left: calc(var(--sidebar-width) + var(--panel-padding-x));
   z-index: 2;
   color: white;
 }
