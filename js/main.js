@@ -8,7 +8,6 @@ import {
 } from './animations.js';
 import { initNavigation } from './navigation.js';
 import { initStatsRing } from './stats-ring.js';
-import { createCopperSphere } from './sphere.js';
 
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -17,6 +16,19 @@ gsap.registerPlugin(ScrollTrigger);
 // Expose for Playwright screenshot script
 window.__gsap = gsap;
 window.__ScrollTrigger = ScrollTrigger;
+
+// Track sphere instances for visibility control
+const spheres = {};
+
+// Lazy-load sphere module (pulls in Three.js ~500KB)
+let createCopperSphere = null;
+function loadSphereModule() {
+  if (createCopperSphere) return Promise.resolve(createCopperSphere);
+  return import('./sphere.js').then(mod => {
+    createCopperSphere = mod.createCopperSphere;
+    return createCopperSphere;
+  });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   // ── GSAP Scroll Animations ──
@@ -30,46 +42,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Stats Ring ──
   initStatsRing();
 
-  // ── Navigation Overlay ──
-  initNavigation();
-
-  // ── 3D Copper Spheres ──
-  // Hero sphere (partially visible at bottom of panel)
-  const heroCanvas = document.getElementById('hero-sphere');
-  if (heroCanvas) {
-    createCopperSphere(heroCanvas, {
-      particleCount: 8000,
-      radius: 2.8,
-      pointSize: 2.0,
-      rotationSpeed: 0.0006,
-      cameraZ: 5,
-    });
-  }
-
-  // Dark info background mesh
-  const darkCanvas = document.getElementById('dark-mesh-canvas');
-  if (darkCanvas) {
-    createCopperSphere(darkCanvas, {
-      particleCount: 12000,
-      radius: 3.5,
-      pointSize: 1.8,
-      rotationSpeed: 0.0004,
-      noiseAmplitude: 0.15,
-      cameraZ: 4.5,
-    });
-  }
-
-  // Nav overlay sphere
-  const navCanvas = document.getElementById('nav-sphere');
-  if (navCanvas) {
-    createCopperSphere(navCanvas, {
-      particleCount: 10000,
-      radius: 3.0,
-      pointSize: 2.2,
-      rotationSpeed: 0.0005,
-      cameraZ: 5,
-    });
-  }
+  // ── Navigation Overlay (with lazy sphere init) ──
+  initNavigation({
+    onOpen() {
+      loadSphereModule().then(create => {
+        if (!spheres.nav) {
+          const navCanvas = document.getElementById('nav-sphere');
+          if (navCanvas) {
+            spheres.nav = create(navCanvas, {
+              particleCount: 3000,
+              radius: 3.0,
+              pointSize: 2.2,
+              rotationSpeed: 0.0005,
+              cameraZ: 5,
+            });
+          }
+        } else {
+          spheres.nav.resume();
+        }
+      });
+    },
+    onClose() {
+      if (spheres.nav) spheres.nav.pause();
+    },
+  });
 
   // ── Sidebar Label Update ──
   const sidebarLabel = document.querySelector('[data-sidebar-label]');
@@ -95,8 +91,58 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── Refresh ScrollTrigger after all content loaded ──
-  window.addEventListener('load', () => {
-    ScrollTrigger.refresh();
+  ScrollTrigger.refresh();
+
+  // ── Defer 3D spheres — load after first paint ──
+  requestAnimationFrame(() => {
+    loadSphereModule().then(create => {
+      const heroCanvas = document.getElementById('hero-sphere');
+      if (heroCanvas) {
+        spheres.hero = create(heroCanvas, {
+          particleCount: 3000,
+          radius: 2.8,
+          pointSize: 2.0,
+          rotationSpeed: 0.0006,
+          cameraZ: 5,
+        });
+      }
+
+      const darkCanvas = document.getElementById('dark-mesh-canvas');
+      if (darkCanvas) {
+        spheres.dark = create(darkCanvas, {
+          particleCount: 4000,
+          radius: 3.5,
+          pointSize: 1.8,
+          rotationSpeed: 0.0004,
+          noiseAmplitude: 0.15,
+          cameraZ: 4.5,
+          maxPixelRatio: 1,  // lower res for background element
+        });
+      }
+
+      // Pause spheres when off-screen
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            const key = entry.target.dataset.sphereKey;
+            if (!key || !spheres[key]) return;
+            if (entry.isIntersecting) {
+              spheres[key].resume();
+            } else {
+              spheres[key].pause();
+            }
+          });
+        }, { threshold: 0.05 });
+
+        if (heroCanvas) {
+          heroCanvas.dataset.sphereKey = 'hero';
+          observer.observe(heroCanvas);
+        }
+        if (darkCanvas) {
+          darkCanvas.dataset.sphereKey = 'dark';
+          observer.observe(darkCanvas);
+        }
+      }
+    });
   });
 });

@@ -37,9 +37,14 @@ body {
   overflow-x: hidden;
 }
 
-img, video, canvas {
+img, video {
   display: block;
   max-width: 100%;
+}
+
+/* Three.js manages canvas size via JS — don't constrain it with CSS */
+canvas {
+  display: block;
 }
 
 a {

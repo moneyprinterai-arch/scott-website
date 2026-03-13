@@ -2,7 +2,7 @@ import gsap from 'gsap';
 
 let isOpen = false;
 
-export function initNavigation() {
+export function initNavigation({ onOpen, onClose } = {}) {
   const trigger = document.querySelector('[data-menu-trigger]');
   const closeBtn = document.querySelector('[data-menu-close]');
   const overlay = document.querySelector('[data-nav-overlay]');
@@ -64,11 +64,15 @@ export function initNavigation() {
 
     // Prevent body scroll
     document.body.style.overflow = 'hidden';
+
+    if (onOpen) onOpen();
   }
 
   function close() {
     if (!isOpen) return;
     isOpen = false;
+
+    if (onClose) onClose();
 
     gsap.timeline({
       onComplete() {

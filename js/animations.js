@@ -1,7 +1,6 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+// registerPlugin is called once in main.js — no need to duplicate here
 
 /**
  * Hero panel slides up, revealing the dark info section beneath.
@@ -205,10 +204,10 @@ export function initCardsAnimation() {
     delay: 0.3,
   });
 
-  // Cards stagger entrance
+  // Cards stagger entrance, then float
   const cards = gsap.utils.toArray('.credit-card');
   cards.forEach((card, i) => {
-    gsap.from(card, {
+    const entrance = gsap.from(card, {
       scrollTrigger: {
         trigger: section,
         start: 'top 60%',
@@ -221,16 +220,16 @@ export function initCardsAnimation() {
       duration: 1.2,
       delay: i * 0.15,
       ease: 'power3.out',
-    });
-
-    // Floating idle animation after entrance
-    gsap.to(card, {
-      y: `+=${8 + i * 3}`,
-      duration: 2.5 + i * 0.4,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut',
-      delay: 1.5 + i * 0.15,
+      onComplete() {
+        // Start floating only after entrance finishes
+        gsap.to(card, {
+          y: `+=${8 + i * 3}`,
+          duration: 2.5 + i * 0.4,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+        });
+      },
     });
   });
 }

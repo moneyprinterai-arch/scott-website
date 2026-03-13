@@ -61,7 +61,7 @@
   justify-content: center;
   color: rgba(255, 255, 255, 0.6);
   transition: color 0.3s, border-color 0.3s;
-  backdrop-filter: blur(4px);
+  background: rgba(26, 10, 5, 0.5);
 }
 
 .sidebar__menu-btn:hover {
@@ -100,6 +100,7 @@
 
 .hero-panel {
   position: relative;
+  will-change: transform;
 }
 
 .hero__content {

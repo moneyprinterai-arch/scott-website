@@ -1,7 +1,6 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+// registerPlugin is called once in main.js
 
 export function initStatsRing() {
   const ring = document.querySelector('.ring-progress');
