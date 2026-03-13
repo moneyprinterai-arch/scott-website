@@ -222,7 +222,9 @@
   top: var(--space-lg);
   left: calc(var(--sidebar-width) + var(--panel-padding-x));
   z-index: 2;
-  color: white;
+  color: #FFFFFF;
+  font-size: 1.5rem;
+  font-weight: var(--fw-bold);
 }
 
 .dark-info__stats {
