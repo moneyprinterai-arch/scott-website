@@ -1,18 +1,18 @@
 import * as THREE from 'three';
 
 /**
- * Creates a copper particle sphere on the given canvas element.
- * Returns a control object with destroy() and pause()/resume() methods.
+ * Creates a copper particle sphere with directional lighting simulation.
+ * Light comes from upper-right, creating dark maroon → golden amber gradient.
  */
 export function createCopperSphere(canvasElement, options = {}) {
   const {
-    particleCount = 4000,
+    particleCount = 6000,
     radius = 2.5,
-    pointSize = 3.5,
     rotationSpeed = 0.0008,
-    noiseAmplitude = 0.12,
+    noiseAmplitude = 0.08,
     cameraZ = 5.5,
     maxPixelRatio = 2,
+    lightDirection = [0.6, 0.5, 0.7], // upper-right-front
   } = options;
 
   if (!canvasElement) return null;
@@ -37,10 +37,9 @@ export function createCopperSphere(canvasElement, options = {}) {
   // Build particle geometry — Fibonacci sphere distribution
   const particleGeom = new THREE.BufferGeometry();
   const posArray = new Float32Array(particleCount * 3);
-  const basePositions = new Float32Array(particleCount * 3);
-  const colorArray = new Float32Array(particleCount * 3);
+  const normalArray = new Float32Array(particleCount * 3);
 
-  // Pre-compute spherical coords for wave deformation (avoids per-frame trig)
+  // Pre-compute spherical coords for wave deformation
   const thetaArr = new Float32Array(particleCount);
   const phiArr = new Float32Array(particleCount);
   const sinPhiArr = new Float32Array(particleCount);
@@ -55,46 +54,106 @@ export function createCopperSphere(canvasElement, options = {}) {
     const sinPhi = Math.sin(phi);
     const cosPhi = Math.cos(phi);
     const x = radius * sinPhi * Math.cos(theta);
-    const y = radius * sinPhi * Math.sin(theta);
-    const z = radius * cosPhi;
+    const y = radius * cosPhi;
+    const z = radius * sinPhi * Math.sin(theta);
 
     const idx = i * 3;
     posArray[idx] = x;
     posArray[idx + 1] = y;
     posArray[idx + 2] = z;
-    basePositions[idx] = x;
-    basePositions[idx + 1] = y;
-    basePositions[idx + 2] = z;
 
-    // Store precomputed spherical coords
+    // Normal = normalized position (sphere surface normal)
+    const len = Math.sqrt(x * x + y * y + z * z);
+    normalArray[idx] = x / len;
+    normalArray[idx + 1] = y / len;
+    normalArray[idx + 2] = z / len;
+
     thetaArr[i] = Math.atan2(z, x);
     phiArr[i] = phi;
     sinPhiArr[i] = sinPhi;
     cosPhiArr[i] = cosPhi;
-
-    // Color: bronze (bottom) -> copper (equator) -> gold (top)
-    const t = (z + radius) / (2 * radius);
-    const equatorFactor = Math.sin(t * Math.PI);
-    colorArray[idx]     = Math.min(0.545 + 0.200 * t + equatorFactor * 0.15, 1);
-    colorArray[idx + 1] = Math.min(0.369 + 0.165 * t + equatorFactor * 0.1, 1);
-    colorArray[idx + 2] = Math.min(0.200 + 0.029 * t, 1);
   }
 
   particleGeom.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-  particleGeom.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+  particleGeom.setAttribute('aNormal', new THREE.BufferAttribute(normalArray, 3));
 
-  const material = new THREE.PointsMaterial({
-    size: pointSize,
-    vertexColors: true,
+  // Custom shader material for directional lighting on particles
+  const material = new THREE.ShaderMaterial({
+    uniforms: {
+      uLightDir: { value: new THREE.Vector3(...lightDirection).normalize() },
+      uPointSize: { value: 3.0 * Math.min(window.devicePixelRatio, maxPixelRatio) },
+      // Dark maroon shadow → rich brown → golden amber → bright highlight
+      uColorShadow: { value: new THREE.Color(0x1a0000) },
+      uColorMid: { value: new THREE.Color(0x7a3a0a) },
+      uColorLit: { value: new THREE.Color(0xd4870a) },
+      uColorHighlight: { value: new THREE.Color(0xffb347) },
+    },
+    vertexShader: `
+      attribute vec3 aNormal;
+      uniform vec3 uLightDir;
+      uniform float uPointSize;
+      varying float vLightIntensity;
+      varying float vDepth;
+
+      void main() {
+        // Transform normal by model rotation (normalMatrix handles this)
+        vec3 worldNormal = normalize(normalMatrix * aNormal);
+
+        // Directional light intensity (dot product)
+        float NdotL = dot(worldNormal, uLightDir);
+
+        // Remap from [-1,1] to [0,1] with slight bias toward shadow
+        vLightIntensity = smoothstep(-0.6, 1.0, NdotL);
+
+        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+        vDepth = -mvPosition.z;
+
+        // Size attenuation — closer particles appear larger
+        gl_PointSize = uPointSize * (5.0 / -mvPosition.z);
+        gl_Position = projectionMatrix * mvPosition;
+      }
+    `,
+    fragmentShader: `
+      uniform vec3 uColorShadow;
+      uniform vec3 uColorMid;
+      uniform vec3 uColorLit;
+      uniform vec3 uColorHighlight;
+      varying float vLightIntensity;
+      varying float vDepth;
+
+      void main() {
+        // Circular point shape
+        vec2 center = gl_PointCoord - vec2(0.5);
+        float dist = length(center);
+        if (dist > 0.5) discard;
+
+        // Soft edge
+        float alpha = 1.0 - smoothstep(0.35, 0.5, dist);
+
+        // Multi-stop color gradient based on light intensity
+        vec3 color;
+        float t = vLightIntensity;
+        if (t < 0.3) {
+          color = mix(uColorShadow, uColorMid, t / 0.3);
+        } else if (t < 0.7) {
+          color = mix(uColorMid, uColorLit, (t - 0.3) / 0.4);
+        } else {
+          color = mix(uColorLit, uColorHighlight, (t - 0.7) / 0.3);
+        }
+
+        // Brighten highlight dots slightly
+        alpha *= mix(0.7, 1.0, t);
+
+        gl_FragColor = vec4(color, alpha);
+      }
+    `,
     transparent: true,
-    opacity: 0.85,
-    sizeAttenuation: true,
     depthWrite: false,
+    blending: THREE.AdditiveBlending,
   });
 
   const points = new THREE.Points(particleGeom, material);
   scene.add(points);
-  // No lights needed — PointsMaterial is unlit
 
   // Animation state
   let time = 0;
@@ -114,9 +173,10 @@ export function createCopperSphere(canvasElement, options = {}) {
     points.rotation.y += rotationSpeed;
     points.rotation.x = Math.sin(time * 0.3) * 0.03;
 
-    // Wave deformation every 3rd frame — using precomputed spherical coords
+    // Wave deformation every 3rd frame
     if (frameCount % 3 === 0) {
       const pos = particleGeom.attributes.position.array;
+      const nrm = particleGeom.attributes.aNormal.array;
       const t15 = time * 1.5;
       const t08 = time * 0.8;
 
@@ -131,11 +191,22 @@ export function createCopperSphere(canvasElement, options = {}) {
                       noiseAmplitude;
 
         const newR = radius + noise;
-        pos[idx]     = newR * sinPhi * Math.cos(theta);
-        pos[idx + 1] = newR * cosPhi;
-        pos[idx + 2] = newR * sinPhi * Math.sin(theta);
+        const x = newR * sinPhi * Math.cos(theta);
+        const y = newR * cosPhi;
+        const z = newR * sinPhi * Math.sin(theta);
+
+        pos[idx] = x;
+        pos[idx + 1] = y;
+        pos[idx + 2] = z;
+
+        // Update normals
+        const len = Math.sqrt(x * x + y * y + z * z);
+        nrm[idx] = x / len;
+        nrm[idx + 1] = y / len;
+        nrm[idx + 2] = z / len;
       }
       particleGeom.attributes.position.needsUpdate = true;
+      particleGeom.attributes.aNormal.needsUpdate = true;
     }
 
     renderer.render(scene, camera);

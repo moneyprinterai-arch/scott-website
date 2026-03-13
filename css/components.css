@@ -60,12 +60,13 @@
   font-weight: var(--fw-light);
   line-height: var(--lh-heading);
   letter-spacing: var(--ls-heading);
-  color: var(--color-text-primary);
+  color: #555555;
   max-width: 550px;
 }
 
 .hero__heading strong {
   font-weight: var(--fw-bold);
+  color: #111111;
 }
 
 .hero__tag {
@@ -148,6 +149,19 @@
 
 .play-btn--small {
   margin-top: var(--space-md);
+}
+
+.dark-info__play-btn {
+  position: absolute;
+  right: 20%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  margin-top: 0;
+}
+
+.dark-info__play-btn:hover {
+  transform: translateY(-50%) scale(1.1);
 }
 
 /* ── Bank Section ── */

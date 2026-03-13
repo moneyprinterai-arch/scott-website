@@ -1,7 +1,7 @@
 :root {
   /* ── Colors ── */
-  --color-bg-dark: #2B0D07;
-  --color-bg-dark-alt: #1A0A05;
+  --color-bg-dark: #1a0005;
+  --color-bg-dark-alt: #120003;
   --color-panel-white: #FFFFFF;
   --color-panel-light: #F5F3F1;
 
@@ -11,11 +11,11 @@
   --color-text-dark-body: #AEA8A6;
   --color-text-dark-subtle: #D5CFCD;
 
-  --color-accent-copper: #B87333;
+  --color-accent-copper: #C8780A;
   --color-accent-gold: #D4A44C;
   --color-accent-bronze: #8B5E3C;
   --color-accent-dark-brown: #6B3A1F;
-  --color-nav-active: #A0522D;
+  --color-nav-active: #C8780A;
   --color-check: #A0522D;
   --color-partner: #999999;
   --color-ring-track: #E8E4E1;
@@ -27,7 +27,7 @@
   );
   --gradient-bg-vignette: radial-gradient(
     ellipse at 30% 50%,
-    #3D1508 0%, #2B0D07 40%, #1A0A05 100%
+    #2a0808 0%, #1a0005 40%, #120003 100%
   );
   --gradient-card: linear-gradient(135deg, #3D1508 0%, #8B5E3C 40%, #D4A44C 70%, #6B3A1F 100%);
   --gradient-card-dark: linear-gradient(135deg, #1A0A05 0%, #3D1508 50%, #2B0D07 100%);

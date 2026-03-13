@@ -118,7 +118,7 @@ export function initNavigation({ onOpen, onClose } = {}) {
     item.addEventListener('mouseenter', () => {
       gsap.to(item, {
         x: 10,
-        color: '#B87333',
+        color: '#C8780A',
         duration: 0.3,
         ease: 'power2.out',
       });

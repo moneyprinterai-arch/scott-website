@@ -50,11 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
           const navCanvas = document.getElementById('nav-sphere');
           if (navCanvas) {
             spheres.nav = create(navCanvas, {
-              particleCount: 3000,
+              particleCount: 5000,
               radius: 3.0,
-              pointSize: 2.2,
               rotationSpeed: 0.0005,
               cameraZ: 5,
+              lightDirection: [0.5, 0.4, 0.7],
             });
           }
         } else {
@@ -99,24 +99,23 @@ document.addEventListener('DOMContentLoaded', () => {
       const heroCanvas = document.getElementById('hero-sphere');
       if (heroCanvas) {
         spheres.hero = create(heroCanvas, {
-          particleCount: 3000,
+          particleCount: 6000,
           radius: 2.8,
-          pointSize: 2.0,
           rotationSpeed: 0.0006,
           cameraZ: 5,
+          lightDirection: [0.6, 0.5, 0.7], // upper-right
         });
       }
 
       const darkCanvas = document.getElementById('dark-mesh-canvas');
       if (darkCanvas) {
         spheres.dark = create(darkCanvas, {
-          particleCount: 4000,
-          radius: 3.5,
-          pointSize: 1.8,
+          particleCount: 6000,
+          radius: 3.2,
           rotationSpeed: 0.0004,
-          noiseAmplitude: 0.15,
+          noiseAmplitude: 0.1,
           cameraZ: 4.5,
-          maxPixelRatio: 1,  // lower res for background element
+          lightDirection: [-0.6, 0.4, 0.7], // upper-LEFT (facing content)
         });
       }
 

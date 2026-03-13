@@ -37,17 +37,7 @@
   transition: color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* ── Navigation overlay ── */
-.nav-overlay {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s, visibility 0.3s;
-}
-
-.nav-overlay.is-open {
-  opacity: 1;
-  visibility: visible;
-}
+/* Nav overlay is controlled by GSAP (display + opacity) */
 
 /* ── Copper shimmer effect for cards ── */
 @keyframes shimmer {
@@ -73,37 +63,35 @@
   pointer-events: none;
 }
 
-/* ── Sphere glow ── */
+/* ── Sphere glow — warm amber bloom from upper-right quadrant ── */
 .hero__sphere-wrap::after {
   content: '';
   position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 350px;
-  height: 200px;
+  top: 10%;
+  right: 15%;
+  width: 400px;
+  height: 400px;
   background: radial-gradient(
     ellipse at center,
-    rgba(184, 115, 51, 0.2) 0%,
-    rgba(184, 115, 51, 0.05) 50%,
-    transparent 80%
+    rgba(212, 135, 10, 0.2) 0%,
+    rgba(200, 120, 10, 0.08) 40%,
+    transparent 70%
   );
   pointer-events: none;
 }
 
-/* ── Nav overlay sphere background ── */
-.nav-overlay__sphere::after {
+/* Nav overlay sphere — glow effect behind canvas */
+.nav-overlay__sphere::before {
   content: '';
   position: absolute;
   inset: 0;
   background: radial-gradient(
     circle at 60% 50%,
-    rgba(184, 115, 51, 0.15) 0%,
-    rgba(43, 13, 7, 0.9) 60%,
-    var(--color-bg-dark) 100%
+    rgba(184, 115, 51, 0.1) 0%,
+    transparent 60%
   );
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
 }
 
 /* ── Testimonial bg fallback pattern ── */
