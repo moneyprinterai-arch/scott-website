@@ -7,7 +7,7 @@
   font-weight: var(--fw-bold);
   font-size: var(--fs-logo);
   letter-spacing: -0.02em;
-  color: var(--color-text-primary);
+  color: #2D0A00;
 }
 
 .section--dark .logo,
@@ -30,12 +30,12 @@
   opacity: 0.7;
 }
 
-.cta-arrow {
+.cta-dot {
   display: flex;
   align-items: center;
 }
 
-.cta-arrow svg {
+.cta-dot svg {
   width: 24px;
   height: 24px;
 }
@@ -60,13 +60,13 @@
   font-weight: var(--fw-light);
   line-height: var(--lh-heading);
   letter-spacing: var(--ls-heading);
-  color: #555555;
+  color: #9A9A9A;
   max-width: 550px;
 }
 
 .hero__heading strong {
   font-weight: var(--fw-bold);
-  color: #111111;
+  color: #1A0503;
 }
 
 .hero__tag {
@@ -78,7 +78,7 @@
 
 .hero__body {
   font-size: var(--fs-body);
-  color: var(--color-text-secondary);
+  color: #666666;
   line-height: var(--lh-body);
   max-width: 340px;
 }
@@ -87,7 +87,7 @@
 .partner-logo {
   display: flex;
   align-items: center;
-  color: var(--color-partner);
+  color: #CCCCCC;
   opacity: 0.6;
 }
 
@@ -108,31 +108,36 @@
 
 /* ── Dark Info Section ── */
 .dark-info__body {
-  font-size: clamp(1.25rem, 2vw, 1.75rem);
-  font-weight: var(--fw-light);
-  line-height: 1.35;
-  color: var(--color-text-dark-heading);
-  max-width: 500px;
+  font-size: clamp(1.5rem, 2vw, 1.75rem);
+  font-weight: var(--fw-medium);
+  line-height: 1.4;
+  color: #FFFFFF;
+  max-width: 45%;
 }
 
-.stat__value {
-  font-size: var(--fs-subheading);
-  font-weight: var(--fw-light);
-  color: var(--color-text-dark-heading);
-  letter-spacing: var(--ls-heading);
+.dark-info__rule {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  width: 40%;
+  margin: var(--space-lg) 0;
 }
 
-.stat__label {
-  font-size: var(--fs-body);
-  color: var(--color-text-dark-subtle);
+.dark-info__stats {
+  display: flex;
+  gap: var(--space-xl);
+}
+
+.stat-inline__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.stat-inline__desc {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
   margin-top: 0.25rem;
-}
-
-.stat__desc {
-  font-size: var(--fs-small);
-  color: var(--color-text-dark-body);
-  margin-top: 0.5rem;
-  max-width: 240px;
+  max-width: 220px;
   line-height: 1.4;
 }
 
@@ -153,11 +158,12 @@
 
 .dark-info__play-btn {
   position: absolute;
-  right: 20%;
+  left: 55%;
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;
   margin-top: 0;
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3));
 }
 
 .dark-info__play-btn:hover {

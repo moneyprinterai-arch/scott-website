@@ -8,19 +8,15 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
  */
 export function initHeroTransition() {
   const hero = document.querySelector('#hero');
-  const heroPanel = document.querySelector('.hero-panel');
-  if (!hero || !heroPanel) return;
+  const darkReveal = document.querySelector('.hero__dark-reveal');
+  if (!hero || !darkReveal) return;
 
   // Set dark-info content to initially hidden
   gsap.set('.dark-info__content', { opacity: 0, y: 40 });
-  gsap.set('.dark-info__stats .stat', { opacity: 0, y: 30 });
+  gsap.set('.dark-info__stats .stat-inline', { opacity: 0, y: 30 });
   gsap.set('.dark-info__play-btn', { opacity: 0, scale: 0.5 });
   gsap.set('.dark-info__logo', { opacity: 0 });
 
-  // Total timeline: 2.0 duration
-  // 0-0.6: panel slides up, hero content fades, sphere fades
-  // 0.3-0.8: dark content fades in
-  // 0.8-2.0: dark section holds (reading time)
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: hero,
@@ -32,53 +28,57 @@ export function initHeroTransition() {
     },
   });
 
-  // White panel slides up and out (first 30% of total scroll)
-  tl.to(heroPanel, {
-    yPercent: -100,
+  // Dark panel rises from bottom with rounded top (0 → 0.6)
+  tl.to(darkReveal, {
+    yPercent: 0,
+    y: 0,
     duration: 0.6,
     ease: 'none',
-  })
-  // Hero content fades quickly as panel starts moving
+  }, 0)
+  // Hero content fades as dark panel rises
   .to('.hero__content', {
     opacity: 0,
-    y: -50,
-    duration: 0.2,
-  }, 0)
+    y: -30,
+    duration: 0.3,
+  }, 0.1)
   // Panel header fades
   .to('.hero-panel .panel-header', {
     opacity: 0,
-    duration: 0.15,
-  }, 0)
-  // Hero sphere scales up and fades
+    duration: 0.2,
+  }, 0.1)
+  // Hero sphere fades
   .to('.hero__sphere-wrap', {
-    scale: 1.5,
-    y: -100,
     opacity: 0,
-    duration: 0.5,
-  }, 0)
-  // Dark-info content fades in as panel clears
+    duration: 0.3,
+  }, 0.1)
+  // Flatten border-radius as dark panel settles
+  .to(darkReveal, {
+    borderRadius: '0 0 0 0',
+    duration: 0.2,
+  }, 0.5)
+  // Dark-info content fades in after panel covers viewport
   .to('.dark-info__logo', {
     opacity: 1,
     duration: 0.2,
-  }, 0.3)
+  }, 0.5)
   .to('.dark-info__content', {
     opacity: 1,
     y: 0,
     duration: 0.25,
-  }, 0.35)
-  .to('.dark-info__stats .stat', {
+  }, 0.55)
+  .to('.dark-info__stats .stat-inline', {
     opacity: 1,
     y: 0,
     stagger: 0.08,
     duration: 0.2,
-  }, 0.4)
+  }, 0.6)
   .to('.dark-info__play-btn', {
     opacity: 1,
     scale: 1,
     duration: 0.2,
-  }, 0.45)
-  // Hold dark section visible until end (empty tween to extend timeline)
-  .to({}, { duration: 1.2 }, 0.8);
+  }, 0.65)
+  // Hold dark section visible (reading time)
+  .to({}, { duration: 1.0 }, 0.8);
 }
 
 /**

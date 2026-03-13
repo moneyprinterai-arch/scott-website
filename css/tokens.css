@@ -1,6 +1,6 @@
 :root {
   /* ── Colors ── */
-  --color-bg-dark: #1a0005;
+  --color-bg-dark: #1A0503;
   --color-bg-dark-alt: #120003;
   --color-panel-white: #FFFFFF;
   --color-panel-light: #F5F3F1;
@@ -27,7 +27,7 @@
   );
   --gradient-bg-vignette: radial-gradient(
     ellipse at 30% 50%,
-    #2a0808 0%, #1a0005 40%, #120003 100%
+    #2a0808 0%, #1A0503 40%, #120003 100%
   );
   --gradient-card: linear-gradient(135deg, #3D1508 0%, #8B5E3C 40%, #D4A44C 70%, #6B3A1F 100%);
   --gradient-card-dark: linear-gradient(135deg, #1A0A05 0%, #3D1508 50%, #2B0D07 100%);

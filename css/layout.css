@@ -119,11 +119,14 @@
   position: relative;
 }
 
-/* Dark reveal layer — sits behind the white panel, fills the hero viewport */
+/* Dark reveal layer — slides up from bottom over the white panel */
 .hero__dark-reveal {
   position: absolute;
-  inset: 0;
-  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  z-index: 3;
   background:
     radial-gradient(ellipse at 70% 50%, rgba(160, 82, 26, 0.08) 0%, transparent 50%),
     #1A0503;
@@ -132,17 +135,19 @@
   padding: var(--space-2xl) var(--panel-padding-x);
   padding-left: calc(var(--sidebar-width) + var(--panel-padding-x));
   overflow: hidden;
-  border-radius: 0;
+  border-radius: 2rem 2rem 0 0;
+  transform: translateY(100%);
+  will-change: transform;
 }
 
 .hero-panel {
   position: relative;
   z-index: 2;
-  will-change: transform;
 }
 
 .hero__content {
-  flex: 1;
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -150,8 +155,8 @@
   text-align: left;
   padding: 0 var(--panel-padding-x);
   gap: var(--space-md);
-  margin-left: 40%;
-  max-width: 55%;
+  margin-left: 50%;
+  max-width: 45%;
 }
 
 .hero__info-row {
@@ -173,11 +178,14 @@
 
 .hero__sphere-wrap {
   position: absolute;
-  left: 5%;
-  bottom: -75%;
-  width: 90%;
+  left: 50%;
+  bottom: -65%;
+  transform: translateX(-50%);
+  width: 120%;
+  max-width: 1200px;
   aspect-ratio: 1 / 1;
   pointer-events: none;
+  z-index: 1;
 }
 
 .hero__sphere-wrap canvas {
@@ -206,7 +214,7 @@
 .dark-info__content {
   position: relative;
   z-index: 1;
-  max-width: 480px;
+  max-width: 50%;
 }
 
 .dark-info__logo {
@@ -221,6 +229,13 @@
   display: flex;
   gap: var(--space-xl);
   margin-top: var(--space-lg);
+}
+
+.dark-info__scroll-indicator {
+  position: absolute;
+  bottom: var(--space-md);
+  right: var(--space-lg);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 /* ── Be Your Own Bank Section ── */
