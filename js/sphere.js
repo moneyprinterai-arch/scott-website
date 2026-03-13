@@ -13,6 +13,7 @@ export function createCopperSphere(canvasElement, options = {}) {
     cameraZ = 5.5,
     maxPixelRatio = 2,
     lightDirection = [0.6, 0.5, 0.7], // upper-right-front
+    useAdditiveBlending = true,
   } = options;
 
   if (!canvasElement) return null;
@@ -81,12 +82,13 @@ export function createCopperSphere(canvasElement, options = {}) {
   const material = new THREE.ShaderMaterial({
     uniforms: {
       uLightDir: { value: new THREE.Vector3(...lightDirection).normalize() },
-      uPointSize: { value: 3.0 * Math.min(window.devicePixelRatio, maxPixelRatio) },
+      uPointSize: { value: (useAdditiveBlending ? 3.0 : 3.5) * Math.min(window.devicePixelRatio, maxPixelRatio) },
       // Dark maroon shadow → rich brown → golden amber → bright highlight
-      uColorShadow: { value: new THREE.Color(0x1a0000) },
-      uColorMid: { value: new THREE.Color(0x7a3a0a) },
-      uColorLit: { value: new THREE.Color(0xd4870a) },
-      uColorHighlight: { value: new THREE.Color(0xffb347) },
+      uColorShadow: { value: new THREE.Color(useAdditiveBlending ? 0x1a0000 : 0x4a1505) },
+      uColorMid: { value: new THREE.Color(useAdditiveBlending ? 0x7a3a0a : 0x8B3A0F) },
+      uColorLit: { value: new THREE.Color(useAdditiveBlending ? 0xd4870a : 0xC4703A) },
+      uColorHighlight: { value: new THREE.Color(useAdditiveBlending ? 0xffb347 : 0xE8A050) },
+      uAlphaBoost: { value: useAdditiveBlending ? 1.0 : 1.5 },
     },
     vertexShader: `
       attribute vec3 aNormal;
@@ -118,6 +120,7 @@ export function createCopperSphere(canvasElement, options = {}) {
       uniform vec3 uColorMid;
       uniform vec3 uColorLit;
       uniform vec3 uColorHighlight;
+      uniform float uAlphaBoost;
       varying float vLightIntensity;
       varying float vDepth;
 
@@ -143,13 +146,14 @@ export function createCopperSphere(canvasElement, options = {}) {
 
         // Brighten highlight dots slightly
         alpha *= mix(0.7, 1.0, t);
+        alpha = clamp(alpha * uAlphaBoost, 0.0, 1.0);
 
         gl_FragColor = vec4(color, alpha);
       }
     `,
     transparent: true,
     depthWrite: false,
-    blending: THREE.AdditiveBlending,
+    blending: useAdditiveBlending ? THREE.AdditiveBlending : THREE.NormalBlending,
   });
 
   const points = new THREE.Points(particleGeom, material);

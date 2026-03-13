@@ -67,26 +67,33 @@ document.addEventListener('DOMContentLoaded', () => {
     },
   });
 
-  // ── Sidebar Label Update ──
+  // ── Sidebar Label + Theme Update ──
+  const sidebar = document.querySelector('.sidebar');
   const sidebarLabel = document.querySelector('[data-sidebar-label]');
-  if (sidebarLabel) {
+  if (sidebarLabel && sidebar) {
     const sections = {
-      hero: '01. Introduction',
-      'dark-info': '01. Introduction',
-      bank: '02. Features',
-      cards: '02. Features',
-      statistics: '03. Numbers',
-      testimonial: '04. Payments',
+      hero: { label: '01. Introduction', dark: false },
+      'dark-info': { label: '01. Introduction', dark: true },
+      bank: { label: '02. Features', dark: true },
+      cards: { label: '02. Features', dark: true },
+      statistics: { label: '03. Numbers', dark: false },
+      testimonial: { label: '04. Payments', dark: true },
     };
 
-    Object.entries(sections).forEach(([id, label]) => {
+    Object.entries(sections).forEach(([id, { label, dark }]) => {
       const el = document.getElementById(id);
       if (!el) return;
       ScrollTrigger.create({
         trigger: el,
         start: 'top center',
-        onEnter: () => { sidebarLabel.textContent = label; },
-        onEnterBack: () => { sidebarLabel.textContent = label; },
+        onEnter: () => {
+          sidebarLabel.textContent = label;
+          sidebar.classList.toggle('sidebar--dark', dark);
+        },
+        onEnterBack: () => {
+          sidebarLabel.textContent = label;
+          sidebar.classList.toggle('sidebar--dark', dark);
+        },
       });
     });
   }
@@ -104,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
           rotationSpeed: 0.0006,
           cameraZ: 5,
           lightDirection: [0.6, 0.5, 0.7], // upper-right
+          useAdditiveBlending: false, // normal blending on white bg
         });
       }
 

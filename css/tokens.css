@@ -46,7 +46,7 @@
   --fs-small: 0.75rem;
   --fs-logo: 1.375rem;
   --fs-counter: clamp(4rem, 8vw, 7.5rem);
-  --fs-nav-item: clamp(2.5rem, 4.5vw, 3.75rem);
+  --fs-nav-item: clamp(3.5rem, 5.5vw, 5rem);
 
   --lh-heading: 1.05;
   --lh-body: 1.6;

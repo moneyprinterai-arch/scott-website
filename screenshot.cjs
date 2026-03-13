@@ -3,11 +3,11 @@ const fs = require('fs');
 
 (async () => {
   const browser = await chromium.launch({
-    args: ['--font-render-hinting=none', '--disable-gpu']
+    args: ['--font-render-hinting=none', '--use-gl=angle', '--enable-gpu-rasterization']
   });
   const ctx = await browser.newContext({
     viewport: { width: 1440, height: 900 },
-    deviceScaleFactor: 2,
+    deviceScaleFactor: 1,
   });
   const page = await ctx.newPage();
 
@@ -17,15 +17,15 @@ const fs = require('fs');
   async function snap(name) {
     const { data } = await client.send('Page.captureScreenshot', {
       format: 'png',
-      clip: { x: 0, y: 0, width: 1440, height: 900, scale: 2 },
+      clip: { x: 0, y: 0, width: 1440, height: 900, scale: 1 },
     });
     fs.writeFileSync(`screenshots/${name}.png`, Buffer.from(data, 'base64'));
     console.log(`  done: ${name}`);
   }
 
   console.log('Loading page...');
-  await page.goto('http://localhost:5173', { waitUntil: 'domcontentloaded' });
-  await page.waitForTimeout(3000);
+  await page.goto('http://localhost:5173', { waitUntil: 'networkidle' });
+  await page.waitForTimeout(5000);
 
   // 1. Hero screenshot (visible by default)
   console.log('Taking hero...');
