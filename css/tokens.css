@@ -1,0 +1,68 @@
+:root {
+  /* ── Colors ── */
+  --color-bg-dark: #2B0D07;
+  --color-bg-dark-alt: #1A0A05;
+  --color-panel-white: #FFFFFF;
+  --color-panel-light: #F5F3F1;
+
+  --color-text-primary: #1A1A1A;
+  --color-text-secondary: #555555;
+  --color-text-dark-heading: #FFFFFF;
+  --color-text-dark-body: #AEA8A6;
+  --color-text-dark-subtle: #D5CFCD;
+
+  --color-accent-copper: #B87333;
+  --color-accent-gold: #D4A44C;
+  --color-accent-bronze: #8B5E3C;
+  --color-accent-dark-brown: #6B3A1F;
+  --color-nav-active: #A0522D;
+  --color-check: #A0522D;
+  --color-partner: #999999;
+  --color-ring-track: #E8E4E1;
+
+  /* ── Gradients ── */
+  --gradient-copper: conic-gradient(
+    from 180deg,
+    #8B5E3C 0%, #D4A44C 25%, #B87333 50%, #6B3A1F 75%, #8B5E3C 100%
+  );
+  --gradient-bg-vignette: radial-gradient(
+    ellipse at 30% 50%,
+    #3D1508 0%, #2B0D07 40%, #1A0A05 100%
+  );
+  --gradient-card: linear-gradient(135deg, #3D1508 0%, #8B5E3C 40%, #D4A44C 70%, #6B3A1F 100%);
+  --gradient-card-dark: linear-gradient(135deg, #1A0A05 0%, #3D1508 50%, #2B0D07 100%);
+
+  /* ── Typography ── */
+  --font-primary: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-bold: 700;
+
+  --fs-display: clamp(3.5rem, 6vw, 6rem);
+  --fs-heading: clamp(2.5rem, 4.5vw, 4.5rem);
+  --fs-subheading: clamp(1.5rem, 2.5vw, 2.5rem);
+  --fs-body: clamp(0.875rem, 1vw, 1rem);
+  --fs-small: 0.75rem;
+  --fs-logo: 1.375rem;
+  --fs-counter: clamp(4rem, 8vw, 7.5rem);
+  --fs-nav-item: clamp(2.5rem, 4.5vw, 3.75rem);
+
+  --lh-heading: 1.05;
+  --lh-body: 1.6;
+  --ls-heading: -0.03em;
+
+  /* ── Spacing ── */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 5rem;
+
+  --panel-radius: 1.75rem;
+  --panel-padding-x: clamp(2.5rem, 5vw, 5rem);
+  --panel-padding-y: clamp(2rem, 4vw, 3.75rem);
+  --sidebar-width: 4.5rem;
+  --panel-max-width: 75rem;
+}

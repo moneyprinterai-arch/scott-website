@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sc&#x014D;tt &mdash; Be Your Own Bank</title>
+
+  <!-- Fonts loaded via @font-face in base.css -->
+
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/animations.css">
+</head>
+<body>
+
+  <!-- ════════════════ FIXED SIDEBAR ════════════════ -->
+  <aside class="sidebar">
+    <button class="sidebar__menu-btn" data-menu-trigger aria-label="Open menu">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="3" cy="3" r="1.5" fill="currentColor"/>
+        <circle cx="10" cy="3" r="1.5" fill="currentColor"/>
+        <circle cx="17" cy="3" r="1.5" fill="currentColor"/>
+        <circle cx="3" cy="10" r="1.5" fill="currentColor"/>
+        <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+        <circle cx="17" cy="10" r="1.5" fill="currentColor"/>
+        <circle cx="3" cy="17" r="1.5" fill="currentColor"/>
+        <circle cx="10" cy="17" r="1.5" fill="currentColor"/>
+        <circle cx="17" cy="17" r="1.5" fill="currentColor"/>
+      </svg>
+    </button>
+    <span class="sidebar__label" data-sidebar-label>01. Introduction</span>
+  </aside>
+
+  <!-- ════════════════ MAIN CONTENT ════════════════ -->
+  <main>
+
+    <!-- ──── SECTION 0: HERO ──── -->
+    <section id="hero" class="section section--hero">
+      <div class="white-panel hero-panel">
+        <!-- Panel header -->
+        <div class="panel-header">
+          <a class="logo" href="#">Sc&#x014D;tt</a>
+          <a class="cta-wallet" href="#">
+            Create Wallet
+            <span class="cta-arrow">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="11"/>
+                <path d="M10 8l4 4-4 4"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+
+        <!-- Hero content -->
+        <div class="hero__content">
+          <h1 class="hero__heading">The world's first <strong>flexible</strong> currency.</h1>
+          <div class="hero__info-row">
+            <p class="hero__tag"><span class="diamond">&#x25C7;</span> Meet Sc&#x014D;tt</p>
+            <p class="hero__body">Sc&#x014D;tt is a stable, decentralized currency that does not discriminate. Any individual or business can realize the advantages of digital money.</p>
+          </div>
+          <div class="hero__partners">
+            <span class="partner-logo">
+              <svg viewBox="0 0 40 16" height="14"><text x="0" y="13" font-size="13" font-family="sans-serif" fill="currentColor">a</text></svg>
+            </span>
+            <span class="partner-logo">
+              <svg viewBox="0 0 20 20" height="18" fill="currentColor"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="5" y="14" font-size="10" font-family="sans-serif">C</text></svg>
+            </span>
+            <span class="partner-logo">
+              <svg viewBox="0 0 20 20" height="18" fill="currentColor"><path d="M5 5h4v4H5zM11 5h4v4h-4zM5 11h4v4H5zM11 11h4v4h-4z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+            </span>
+            <span class="partner-logo partner-logo--text">Uber</span>
+            <span class="partner-logo">
+              <svg viewBox="0 0 20 20" height="18" fill="currentColor"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="6" y="14" font-size="11" font-family="sans-serif" font-weight="bold">B</text></svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- Sphere container (bottom of panel) -->
+        <div class="hero__sphere-wrap">
+          <canvas id="hero-sphere"></canvas>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="hero__scroll-indicator">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M7 1v10M3 8l4 4 4-4"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──── SECTION 1: DARK INFO ──── -->
+    <section id="dark-info" class="section section--dark section--dark-info">
+      <div class="dark-info__panel">
+        <canvas id="dark-mesh-canvas" class="dark-info__canvas"></canvas>
+        <div class="dark-info__content">
+          <p class="dark-info__body">Sc&#x014D;tt is the most widely integrated digital-to-fiat currency today. Buy, sell, and use Sc&#x014D;tt tokens at our exchange and service providers.</p>
+          <div class="dark-info__stats">
+            <div class="stat">
+              <h3 class="stat__value">$620B</h3>
+              <p class="stat__label">Transactions</p>
+              <p class="stat__desc">Sc&#x014D;tt customers have processed $620B+ worth of transactions</p>
+            </div>
+            <div class="stat">
+              <h3 class="stat__value">7.1M+</h3>
+              <p class="stat__label">Wallets</p>
+              <p class="stat__desc">Over 7.1 million wallet downloads across integrated stores</p>
+            </div>
+          </div>
+          <button class="play-btn" aria-label="Play video">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <circle cx="24" cy="24" r="23" stroke="white" stroke-width="1.5"/>
+              <polygon points="20,16 34,24 20,32" fill="white"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──── SECTION 2: BE YOUR OWN BANK ──── -->
+    <section id="bank" class="section section--dark section--bank">
+      <div class="bank__layout">
+        <!-- Phone mockup -->
+        <div class="bank__phone-area">
+          <div class="phone-mockup">
+            <div class="phone-mockup__screen">
+              <div class="phone-mockup__header">Sc&#x014D;tt</div>
+              <div class="phone-mockup__balance">$4,521.80</div>
+              <div class="phone-mockup__label">Total Balance</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text content -->
+        <div class="bank__content">
+          <h2 class="bank__heading">Be<br>Your<br>Own<br>Bank<sup>&reg;</sup></h2>
+          <nav class="bank__tabs">
+            <button class="tab tab--active">WALLET</button>
+            <button class="tab">SECURITY</button>
+            <button class="tab">TRANSACTIONS</button>
+          </nav>
+          <p class="bank__body">With our proprietary trading apps, regulation and payments API, the world is your oyster. We give you full control to issue physical and virtual cards, data, make payment decisions from your mobile and desktop.</p>
+          <button class="play-btn play-btn--small" aria-label="Learn more">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <circle cx="18" cy="18" r="17" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+              <path d="M14 12l8 6-8 6z" fill="rgba(255,255,255,0.6)"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──── SECTION 3: SEND, SPEND, RECEIVE ──── -->
+    <section id="cards" class="section section--dark section--cards">
+      <div class="cards__layout">
+        <!-- Text -->
+        <div class="cards__content">
+          <h2 class="cards__heading"><em>Send,<br>Spend,</em><br><strong>Receive.</strong></h2>
+          <p class="cards__feature">
+            <span class="checkmark">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8l4 4 6-8" stroke="var(--color-check)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <strong>Control card settings with ease</strong>
+          </p>
+          <p class="cards__body">Get single-use cards when shopping online somewhere new. They can't be reused, even if the details are exposed</p>
+        </div>
+
+        <!-- Cards visual -->
+        <div class="cards__visual">
+          <div class="credit-card credit-card--1">
+            <div class="credit-card__inner">
+              <div class="credit-card__logo">Sc&#x014D;tt</div>
+              <div class="credit-card__chip">
+                <svg width="30" height="22" viewBox="0 0 30 22" fill="none">
+                  <rect x="1" y="1" width="28" height="20" rx="3" fill="#D4A44C" stroke="#B87333" stroke-width="0.5"/>
+                  <line x1="1" y1="8" x2="29" y2="8" stroke="#B87333" stroke-width="0.5"/>
+                  <line x1="1" y1="14" x2="29" y2="14" stroke="#B87333" stroke-width="0.5"/>
+                  <line x1="15" y1="1" x2="15" y2="21" stroke="#B87333" stroke-width="0.5"/>
+                </svg>
+              </div>
+              <div class="credit-card__number">1234 &nbsp; 5678 &nbsp; 9012 &nbsp; 3456</div>
+              <div class="credit-card__footer">
+                <span class="credit-card__name">CIARAN WINE</span>
+                <span class="credit-card__brand">VISA</span>
+              </div>
+            </div>
+          </div>
+          <div class="credit-card credit-card--2">
+            <div class="credit-card__inner">
+              <div class="credit-card__logo">Sc&#x014D;tt</div>
+              <div class="credit-card__chip">
+                <svg width="30" height="22" viewBox="0 0 30 22" fill="none">
+                  <rect x="1" y="1" width="28" height="20" rx="3" fill="#D4A44C" stroke="#B87333" stroke-width="0.5"/>
+                  <line x1="1" y1="8" x2="29" y2="8" stroke="#B87333" stroke-width="0.5"/>
+                  <line x1="1" y1="14" x2="29" y2="14" stroke="#B87333" stroke-width="0.5"/>
+                  <line x1="15" y1="1" x2="15" y2="21" stroke="#B87333" stroke-width="0.5"/>
+                </svg>
+              </div>
+              <div class="credit-card__number">1234 &nbsp; 5678 &nbsp; 9012 &nbsp; 3456</div>
+              <div class="credit-card__footer">
+                <span class="credit-card__name">DIAN PETERSON</span>
+                <span class="credit-card__brand">VISA</span>
+              </div>
+            </div>
+          </div>
+          <div class="credit-card credit-card--3">
+            <div class="credit-card__inner">
+              <div class="credit-card__logo">Sc&#x014D;tt</div>
+              <div class="credit-card__chip">
+                <svg width="30" height="22" viewBox="0 0 30 22" fill="none">
+                  <rect x="1" y="1" width="28" height="20" rx="3" fill="#D4A44C" stroke="#B87333" stroke-width="0.5"/>
+                  <line x1="1" y1="8" x2="29" y2="8" stroke="#B87333" stroke-width="0.5"/>
+                  <line x1="1" y1="14" x2="29" y2="14" stroke="#B87333" stroke-width="0.5"/>
+                  <line x1="15" y1="1" x2="15" y2="21" stroke="#B87333" stroke-width="0.5"/>
+                </svg>
+              </div>
+              <div class="credit-card__number">1234 &nbsp; 5678 &nbsp; 9012 &nbsp; 3456</div>
+              <div class="credit-card__footer">
+                <span class="credit-card__name">GIDEON KEELAN</span>
+                <span class="credit-card__brand">VISA</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──── SECTION 4: STATISTICS ──── -->
+    <section id="statistics" class="section section--stats">
+      <div class="white-panel stats-panel">
+        <div class="panel-header">
+          <a class="logo" href="#">Sc&#x014D;tt</a>
+        </div>
+        <div class="stats__layout">
+          <div class="stats__ring-area">
+            <svg class="stats-ring" viewBox="0 0 400 400" width="400" height="400">
+              <defs>
+                <linearGradient id="copper-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#8B5E3C"/>
+                  <stop offset="30%" stop-color="#D4A44C"/>
+                  <stop offset="60%" stop-color="#B87333"/>
+                  <stop offset="100%" stop-color="#6B3A1F"/>
+                </linearGradient>
+              </defs>
+              <!-- Track -->
+              <circle cx="200" cy="200" r="160" fill="none"
+                stroke="var(--color-ring-track)" stroke-width="3"/>
+              <!-- Progress -->
+              <circle class="ring-progress" cx="200" cy="200" r="160" fill="none"
+                stroke="url(#copper-gradient)" stroke-width="38"
+                stroke-linecap="round"
+                stroke-dasharray="1005.31"
+                stroke-dashoffset="50.27"
+                transform="rotate(-90 200 200)"/>
+            </svg>
+            <span class="stats__counter" data-counter>12.8k</span>
+          </div>
+          <div class="stats__content">
+            <h2 class="stats__heading">Liquidity<br><strong>Providers</strong></h2>
+            <p class="stats__body">Scott empowers developers, liquidity providers and traders to participate in a financial marketplace that is open and accessible to all.</p>
+            <div class="stats__partners">
+              <span class="partner-logo partner-logo--text partner-logo--dark">coinbase</span>
+              <span class="partner-logo partner-logo--text partner-logo--dark">VISA</span>
+              <span class="partner-logo partner-logo--text partner-logo--dark">IBM</span>
+            </div>
+          </div>
+        </div>
+        <span class="sidebar__label sidebar__label--panel">03. Numbers</span>
+      </div>
+    </section>
+
+    <!-- ──── SECTION 5: TESTIMONIAL ──── -->
+    <section id="testimonial" class="section section--testimonial">
+      <div class="testimonial__bg"></div>
+      <div class="testimonial__content">
+        <blockquote class="testimonial__quote">&ldquo;With Sc&#x014D;tt we have the freedom to process payments across different currencies and markets, in seconds.&rdquo;</blockquote>
+        <p class="testimonial__attribution"><strong>Naomi Harris</strong> &middot; Small business owner</p>
+      </div>
+      <div class="testimonial__card">
+        <div class="testimonial__card-header">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+            <circle cx="3" cy="3" r="1.5" fill="#1A1A1A"/><circle cx="10" cy="3" r="1.5" fill="#1A1A1A"/>
+            <circle cx="17" cy="3" r="1.5" fill="#1A1A1A"/><circle cx="3" cy="10" r="1.5" fill="#1A1A1A"/>
+            <circle cx="10" cy="10" r="1.5" fill="#1A1A1A"/><circle cx="17" cy="10" r="1.5" fill="#1A1A1A"/>
+            <circle cx="3" cy="17" r="1.5" fill="#1A1A1A"/><circle cx="10" cy="17" r="1.5" fill="#1A1A1A"/>
+            <circle cx="17" cy="17" r="1.5" fill="#1A1A1A"/>
+          </svg>
+          <span class="testimonial__card-logo">Sc&#x014D;tt</span>
+        </div>
+        <div class="testimonial__card-ring">
+          <svg viewBox="0 0 120 120" width="100" height="100">
+            <circle cx="60" cy="60" r="48" fill="none" stroke="#E8E4E1" stroke-width="2"/>
+            <circle cx="60" cy="60" r="48" fill="none" stroke="url(#copper-gradient-mini)" stroke-width="12" stroke-linecap="round"
+              stroke-dasharray="301.59" stroke-dashoffset="15" transform="rotate(-90 60 60)"/>
+            <defs>
+              <linearGradient id="copper-gradient-mini" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#8B5E3C"/><stop offset="50%" stop-color="#D4A44C"/><stop offset="100%" stop-color="#6B3A1F"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span class="testimonial__card-counter">12.8k</span>
+        </div>
+        <h3 class="testimonial__card-heading">Liquidity<br><strong>Providers</strong></h3>
+        <p class="testimonial__card-body">Scott empowers developers, liquidity providers and traders to participate in a financial marketplace that is open and accessible to all.</p>
+        <div class="testimonial__card-partners">
+          <span>coinbase</span><span>VISA</span><span>IBM</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ════════════════ NAVIGATION OVERLAY ════════════════ -->
+  <div class="nav-overlay" data-nav-overlay>
+    <div class="nav-overlay__panel">
+      <!-- Sphere -->
+      <div class="nav-overlay__sphere">
+        <canvas id="nav-sphere"></canvas>
+      </div>
+
+      <!-- Close button -->
+      <button class="nav-overlay__close" data-menu-close aria-label="Close menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
+
+      <!-- Header -->
+      <div class="nav-overlay__header">
+        <a class="logo" href="#">Sc&#x014D;tt</a>
+        <a class="cta-wallet" href="#">
+          Create Wallet
+          <span class="cta-arrow">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="11"/><path d="M10 8l4 4-4 4"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+
+      <!-- Menu items -->
+      <nav class="nav-overlay__menu">
+        <a href="#hero" class="nav-item">Meet Sc&#x014D;tt</a>
+        <a href="#" class="nav-item">About</a>
+        <a href="#" class="nav-item">Features<sup>6</sup></a>
+        <a href="#statistics" class="nav-item nav-item--active">Statistics</a>
+        <a href="#" class="nav-item">Payments</a>
+      </nav>
+
+      <!-- Footer -->
+      <div class="nav-overlay__footer">
+        <p class="nav-footer__title"><strong>Customer Support</strong></p>
+        <p class="nav-footer__text">Multi-language support with<br>10 crypto-experts.</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>

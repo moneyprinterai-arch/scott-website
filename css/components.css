@@ -1,0 +1,511 @@
+/* ══════════════════════════════════════
+   COMPONENTS
+   ══════════════════════════════════════ */
+
+/* ── Logo ── */
+.logo {
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-logo);
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+}
+
+.section--dark .logo,
+.dark-info__panel .logo {
+  color: var(--color-text-dark-heading);
+}
+
+/* ── CTA Wallet Button ── */
+.cta-wallet {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+  color: var(--color-text-primary);
+  transition: opacity 0.3s;
+}
+
+.cta-wallet:hover {
+  opacity: 0.7;
+}
+
+.cta-arrow {
+  display: flex;
+  align-items: center;
+}
+
+.cta-arrow svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ── Diamond Icon ── */
+.diamond {
+  font-size: 0.6em;
+  margin-right: 0.25em;
+  vertical-align: middle;
+}
+
+/* ── Hero Typography ── */
+.hero__label {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-regular);
+  color: var(--color-text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.hero__heading {
+  font-size: var(--fs-heading);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-heading);
+  color: var(--color-text-primary);
+  max-width: 550px;
+}
+
+.hero__heading strong {
+  font-weight: var(--fw-bold);
+}
+
+.hero__tag {
+  font-size: var(--fs-small);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.hero__body {
+  font-size: var(--fs-body);
+  color: var(--color-text-secondary);
+  line-height: var(--lh-body);
+  max-width: 340px;
+}
+
+/* ── Partner Logos ── */
+.partner-logo {
+  display: flex;
+  align-items: center;
+  color: var(--color-partner);
+  opacity: 0.6;
+}
+
+.partner-logo--text {
+  font-size: 0.8rem;
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.03em;
+}
+
+.partner-logo--dark {
+  color: var(--color-text-secondary);
+}
+
+.partner-logo svg {
+  height: 18px;
+  width: auto;
+}
+
+/* ── Dark Info Section ── */
+.dark-info__body {
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: var(--fw-light);
+  line-height: 1.35;
+  color: var(--color-text-dark-heading);
+  max-width: 500px;
+}
+
+.stat__value {
+  font-size: var(--fs-subheading);
+  font-weight: var(--fw-light);
+  color: var(--color-text-dark-heading);
+  letter-spacing: var(--ls-heading);
+}
+
+.stat__label {
+  font-size: var(--fs-body);
+  color: var(--color-text-dark-subtle);
+  margin-top: 0.25rem;
+}
+
+.stat__desc {
+  font-size: var(--fs-small);
+  color: var(--color-text-dark-body);
+  margin-top: 0.5rem;
+  max-width: 240px;
+  line-height: 1.4;
+}
+
+/* ── Play Button ── */
+.play-btn {
+  margin-top: var(--space-lg);
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.play-btn:hover {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+
+.play-btn--small {
+  margin-top: var(--space-md);
+}
+
+/* ── Bank Section ── */
+.bank__heading {
+  font-size: var(--fs-display);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-heading);
+  color: var(--color-text-dark-heading);
+}
+
+.bank__heading sup {
+  font-size: 0.35em;
+  vertical-align: super;
+}
+
+.tab {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.1em;
+  padding-bottom: 0.5rem;
+  color: var(--color-text-dark-body);
+  border-bottom: 1px solid transparent;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.tab--active {
+  color: var(--color-text-dark-heading);
+  border-bottom-color: var(--color-text-dark-heading);
+}
+
+.tab:hover {
+  color: var(--color-text-dark-heading);
+}
+
+/* ── Phone Mockup ── */
+.phone-mockup {
+  width: 220px;
+  height: 440px;
+  border-radius: 36px;
+  border: 2px solid rgba(184, 115, 51, 0.3);
+  background: linear-gradient(180deg, #2B0D07 0%, #3D1508 50%, #1A0A05 100%);
+  box-shadow:
+    0 0 80px rgba(184, 115, 51, 0.15),
+    0 0 0 1px rgba(184, 115, 51, 0.1) inset;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transform: rotateY(8deg) rotateZ(-3deg);
+  transform-style: preserve-3d;
+}
+
+.phone-mockup__screen {
+  text-align: center;
+  color: var(--color-text-dark-heading);
+}
+
+.phone-mockup__header {
+  font-size: 1rem;
+  font-weight: var(--fw-bold);
+  opacity: 0.8;
+  margin-bottom: var(--space-lg);
+}
+
+.phone-mockup__balance {
+  font-size: 2rem;
+  font-weight: var(--fw-light);
+  letter-spacing: -0.02em;
+}
+
+.phone-mockup__label {
+  font-size: var(--fs-small);
+  color: var(--color-text-dark-body);
+  margin-top: 0.25rem;
+}
+
+/* ── Cards Heading ── */
+.cards__heading {
+  font-size: var(--fs-display);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-heading);
+  color: var(--color-text-dark-heading);
+}
+
+.cards__heading em {
+  font-style: italic;
+  font-weight: var(--fw-light);
+}
+
+.cards__heading strong {
+  font-weight: var(--fw-bold);
+  font-style: normal;
+}
+
+.cards__feature {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: var(--space-lg);
+  color: var(--color-text-dark-heading);
+}
+
+.cards__feature strong {
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-body);
+}
+
+.cards__body {
+  color: var(--color-text-dark-body);
+  margin-top: var(--space-sm);
+  max-width: 340px;
+  line-height: var(--lh-body);
+}
+
+/* ── Credit Cards ── */
+.credit-card {
+  position: absolute;
+  width: 320px;
+  height: 200px;
+  border-radius: 16px;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.credit-card__inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Card backgrounds — dark base with subtle copper glow (matching reference) */
+.credit-card--1 .credit-card__inner {
+  background:
+    radial-gradient(ellipse at 70% 30%, rgba(184, 115, 51, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 30% 80%, rgba(139, 94, 60, 0.1) 0%, transparent 50%),
+    linear-gradient(135deg, #1A0A05 0%, #2B1610 40%, #1A0A05 100%);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(184, 115, 51, 0.1) inset;
+}
+
+.credit-card--2 .credit-card__inner {
+  background:
+    radial-gradient(ellipse at 60% 40%, rgba(212, 164, 76, 0.2) 0%, transparent 55%),
+    radial-gradient(ellipse at 20% 70%, rgba(139, 94, 60, 0.15) 0%, transparent 50%),
+    linear-gradient(135deg, #2B1610 0%, #3D1F14 40%, #1A0A05 100%);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(184, 115, 51, 0.12) inset;
+}
+
+.credit-card--3 .credit-card__inner {
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(212, 164, 76, 0.25) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(184, 115, 51, 0.15) 0%, transparent 40%),
+    linear-gradient(135deg, #2B1610 0%, #4A2618 40%, #1A0A05 100%);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(212, 164, 76, 0.15) inset;
+}
+
+/* Card positions -- cascading 3D fan */
+.credit-card--1 {
+  top: 0;
+  right: 40px;
+  transform: rotateX(-5deg) rotateY(-20deg) rotateZ(-20deg);
+  z-index: 1;
+}
+
+.credit-card--2 {
+  top: 80px;
+  right: 0;
+  transform: rotateX(-3deg) rotateY(-15deg) rotateZ(-12deg);
+  z-index: 2;
+}
+
+.credit-card--3 {
+  top: 200px;
+  right: 20px;
+  transform: rotateX(-2deg) rotateY(-10deg) rotateZ(5deg);
+  z-index: 3;
+}
+
+.credit-card__logo {
+  font-weight: var(--fw-bold);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: right;
+}
+
+.credit-card__chip {
+  margin-top: 0.5rem;
+}
+
+.credit-card__number {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.15em;
+  font-variant-numeric: tabular-nums;
+}
+
+.credit-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.credit-card__name {
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.1em;
+}
+
+.credit-card__brand {
+  font-size: 0.75rem;
+  font-weight: var(--fw-bold);
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.08em;
+}
+
+/* ── Stats Section ── */
+.stats-ring {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.stats__heading {
+  font-size: var(--fs-heading);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-heading);
+  color: var(--color-text-primary);
+}
+
+.stats__heading strong {
+  font-weight: var(--fw-bold);
+}
+
+.stats__body {
+  color: var(--color-text-secondary);
+  margin-top: var(--space-sm);
+  max-width: 320px;
+  line-height: var(--lh-body);
+}
+
+/* ── Testimonial ── */
+.testimonial__quote {
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: var(--fw-light);
+  line-height: 1.35;
+  color: var(--color-text-dark-heading);
+}
+
+.testimonial__attribution {
+  margin-top: var(--space-md);
+  font-size: var(--fs-small);
+  color: var(--color-text-dark-body);
+}
+
+.testimonial__attribution strong {
+  color: var(--color-text-dark-heading);
+  font-weight: var(--fw-medium);
+}
+
+/* Testimonial mini card */
+.testimonial__card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: var(--space-sm);
+}
+
+.testimonial__card-logo {
+  font-weight: var(--fw-bold);
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+}
+
+.testimonial__card-ring {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.testimonial__card-counter {
+  position: absolute;
+  font-size: 1.5rem;
+  font-weight: var(--fw-light);
+  color: var(--color-text-primary);
+}
+
+.testimonial__card-heading {
+  font-size: 1.1rem;
+  font-weight: var(--fw-light);
+  line-height: 1.15;
+  color: var(--color-text-primary);
+  margin-top: var(--space-xs);
+}
+
+.testimonial__card-heading strong {
+  font-weight: var(--fw-bold);
+}
+
+.testimonial__card-body {
+  font-size: 0.65rem;
+  color: var(--color-text-secondary);
+  margin-top: var(--space-xs);
+  line-height: 1.4;
+}
+
+.testimonial__card-partners {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
+  font-size: 0.6rem;
+  color: var(--color-partner);
+}
+
+/* ── Navigation Items ── */
+.nav-item {
+  font-size: var(--fs-nav-item);
+  font-weight: var(--fw-regular);
+  line-height: 1.2;
+  color: var(--color-text-primary);
+  transition: color 0.3s, transform 0.3s;
+  display: block;
+}
+
+.nav-item:hover {
+  color: var(--color-accent-copper);
+  transform: translateX(8px);
+}
+
+.nav-item--active {
+  color: var(--color-nav-active);
+}
+
+.nav-item sup {
+  font-size: 0.35em;
+  vertical-align: super;
+  color: var(--color-text-secondary);
+}
+
+.nav-footer__title {
+  font-size: var(--fs-body);
+  color: var(--color-text-primary);
+}
+
+.nav-footer__text {
+  font-size: var(--fs-small);
+  color: var(--color-text-secondary);
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}
