@@ -40,7 +40,7 @@
   --fw-bold: 700;
 
   --fs-display: clamp(3.5rem, 6vw, 6rem);
-  --fs-heading: clamp(2.5rem, 4.5vw, 4.5rem);
+  --fs-heading: clamp(2.5rem, 3.8vw, 3.75rem);
   --fs-subheading: clamp(1.5rem, 2.5vw, 2.5rem);
   --fs-body: clamp(0.875rem, 1vw, 1rem);
   --fs-small: 0.75rem;

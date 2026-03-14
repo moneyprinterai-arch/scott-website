@@ -18,8 +18,6 @@ https://player.vimeo.com/video/557996685?background=1&loop=1
 Hero + Page 1 transition:
 https://player.vimeo.com/video/566009706?background=1&loop=1
 
-Live build:
-https://scott-website-alpha.vercel.app
 
 —
 

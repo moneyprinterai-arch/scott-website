@@ -151,22 +151,24 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
   text-align: left;
-  padding: 0 var(--panel-padding-x);
+  padding: 0 var(--space-lg);
+  padding-top: 2vh;
   gap: var(--space-md);
-  margin-left: 50%;
-  max-width: 45%;
+  margin-left: 42%;
+  max-width: 52%;
+  flex: 1;
 }
 
 .hero__info-row {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
-  gap: var(--space-sm);
+  gap: var(--space-lg);
   margin-top: var(--space-lg);
   text-align: left;
-  max-width: 340px;
+  width: 100%;
 }
 
 .hero__partners {
@@ -179,11 +181,10 @@
 .hero__sphere-wrap {
   position: absolute;
   left: 50%;
-  bottom: -65%;
+  bottom: -60vh;
   transform: translateX(-50%);
-  width: 120%;
-  max-width: 1200px;
-  aspect-ratio: 1 / 1;
+  width: 110vh;
+  height: 110vh;
   pointer-events: none;
   z-index: 1;
 }

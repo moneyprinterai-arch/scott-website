@@ -128,13 +128,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const heroCanvas = document.getElementById('hero-sphere');
       if (heroCanvas) {
         spheres.hero = create(heroCanvas, {
-          rows: 100,
-          colsBase: 220,
+          rows: 200,
+          colsBase: 440,
           radius: 1,
-          rotationSpeed: 0.001,
-          waveAmplitude: 0.03,
-          waveSpeed: 1.5,
-          cameraZ: 2.5,
+          rotationSpeed: 0.0005,
+          waveAmplitude: 0.018,
+          waveSpeed: 0.8,
+          cameraZ: 2.2,
           lightDirection: [-1.0, 0.8, 0.5],
           basePointSize: 2.8,
           useAdditiveBlending: false,
@@ -144,15 +144,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const darkCanvas = document.getElementById('dark-mesh-canvas');
       if (darkCanvas) {
         spheres.dark = create(darkCanvas, {
-          rows: 100,
-          colsBase: 220,
+          rows: 140,
+          colsBase: 300,
           radius: 1,
-          rotationSpeed: 0.0008,
-          waveAmplitude: 0.03,
-          waveSpeed: 1.5,
-          cameraZ: 2.5,
+          rotationSpeed: 0.0006,
+          waveAmplitude: 0.02,
+          waveSpeed: 1.0,
+          cameraZ: 2.35,
           lightDirection: [-1.0, 0.8, 0.5],
-          basePointSize: 2.8,
+          basePointSize: 2.4,
           useAdditiveBlending: true,
         });
       }

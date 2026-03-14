@@ -99,10 +99,10 @@ export function createCopperSphere(canvasElement, options = {}) {
       uLightDir: { value: new THREE.Vector3(...lightDirection).normalize() },
       uPointSize: { value: basePointSize * dpr },
       // Dark shadow → mid copper → bright golden-amber → highlight
-      uColorShadow: { value: new THREE.Color(useAdditiveBlending ? 0x1a0500 : 0x1A0503) },
-      uColorMid: { value: new THREE.Color(useAdditiveBlending ? 0x7a3a0a : 0xA0521A) },
-      uColorLit: { value: new THREE.Color(useAdditiveBlending ? 0xd4870a : 0xE8A030) },
-      uColorHighlight: { value: new THREE.Color(useAdditiveBlending ? 0xffb347 : 0xF5C060) },
+      uColorShadow: { value: new THREE.Color(useAdditiveBlending ? 0x080100 : 0x2B0D07) },
+      uColorMid: { value: new THREE.Color(useAdditiveBlending ? 0x7a3a10 : 0x9B5A28) },
+      uColorLit: { value: new THREE.Color(useAdditiveBlending ? 0xd08838 : 0xC8833A) },
+      uColorHighlight: { value: new THREE.Color(useAdditiveBlending ? 0xf0a848 : 0xDCA050) },
     },
     vertexShader: `
       attribute vec3 aNormal;
@@ -117,13 +117,13 @@ export function createCopperSphere(canvasElement, options = {}) {
         // Directional light intensity
         float NdotL = dot(worldNormal, uLightDir);
 
-        // Remap from [-1,1] to [0,1] with shadow bias
-        vLightIntensity = smoothstep(-0.5, 1.0, NdotL);
+        // Remap from [-1,1] to [0,1] — sharp shadow cutoff
+        vLightIntensity = smoothstep(-0.15, 1.0, NdotL);
 
         vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
 
-        // Size varies by light: brighter = larger, darker = smaller
-        float sizeMult = mix(0.7, 1.3, vLightIntensity);
+        // Size varies by light: brighter = larger, shadow = much smaller
+        float sizeMult = mix(0.4, 1.5, vLightIntensity);
         gl_PointSize = uPointSize * sizeMult * (3.0 / -mvPosition.z);
         gl_Position = projectionMatrix * mvPosition;
       }
@@ -155,8 +155,8 @@ export function createCopperSphere(canvasElement, options = {}) {
           color = mix(uColorLit, uColorHighlight, (t - 0.6) / 0.4);
         }
 
-        // Brightness varies with light
-        alpha *= mix(0.6, 1.0, t);
+        // Brightness varies with light — shadow side nearly invisible
+        alpha *= mix(0.08, 1.0, smoothstep(0.0, 0.4, t));
 
         gl_FragColor = vec4(color, alpha);
       }
