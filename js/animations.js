@@ -3,82 +3,100 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 // registerPlugin is called once in main.js — no need to duplicate here
 
 /**
- * Hero panel slides up, revealing the dark info section beneath.
- * This is the signature animation of the site.
+ * Dark panel (Page 1 / About) peeks from the bottom of the hero,
+ * then rises on scroll to fill the viewport.
+ * The panel is a CSS border-radius card, NOT a 3D sphere.
  */
 export function initHeroTransition() {
   const hero = document.querySelector('#hero');
   const darkReveal = document.querySelector('.hero__dark-reveal');
+  const heroPanel = document.querySelector('.hero-panel');
+
   if (!hero || !darkReveal) return;
 
-  // Set dark-info content to initially hidden
-  gsap.set('.dark-info__content', { opacity: 0, y: 40 });
-  gsap.set('.dark-info__stats .stat-inline', { opacity: 0, y: 30 });
-  gsap.set('.dark-info__play-btn', { opacity: 0, scale: 0.5 });
-  gsap.set('.dark-info__logo', { opacity: 0 });
+  // ── Load entrance: pill peeks from bottom on page load ──
+  // The shape is 46% tall. At rest it shows ~16% of viewport (the pill top peek).
+  // yPercent: 58 hides 58% of the element below the viewport bottom.
+  gsap.set(darkReveal, { yPercent: 58 });
 
+  // Fade in dark-info content — starts hidden
+  gsap.set('.dark-info__content', { opacity: 0, y: 30 });
+  gsap.set('.dark-info__stats .stat-inline', { opacity: 0, y: 20 });
+  gsap.set('.dark-info__play-btn', { opacity: 0, scale: 0.6 });
+  gsap.set('.dark-info__logo', { opacity: 0 });
+  gsap.set('.dark-info__section-label', { opacity: 0 });
+  gsap.set('.dark-info__scroll-indicator', { opacity: 0 });
+
+  // ── ScrollTrigger timeline ──
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: hero,
       start: 'top top',
-      end: '+=250%',
+      end: '+=220%',
       scrub: 1,
       pin: true,
       anticipatePin: 1,
     },
   });
 
-  // Dark panel rises from bottom with rounded top (0 → 0.6)
+  // Phase 1 (0→0.55): pill rises and expands to fill viewport
   tl.to(darkReveal, {
     yPercent: 0,
-    y: 0,
-    duration: 0.6,
+    left: '0%',
+    right: '0%',
+    height: '100%',
+    duration: 0.55,
     ease: 'none',
-  }, 0)
-  // Hero content fades as dark panel rises
-  .to('.hero__content', {
-    opacity: 0,
-    y: -30,
-    duration: 0.3,
-  }, 0.1)
-  // Panel header fades
-  .to('.hero-panel .panel-header', {
-    opacity: 0,
-    duration: 0.2,
-  }, 0.1)
-  // Hero sphere fades
-  .to('.hero__sphere-wrap', {
-    opacity: 0,
-    duration: 0.3,
-  }, 0.1)
-  // Flatten border-radius as dark panel settles
-  .to(darkReveal, {
-    borderRadius: '0 0 0 0',
-    duration: 0.2,
-  }, 0.5)
-  // Dark-info content fades in after panel covers viewport
-  .to('.dark-info__logo', {
+  }, 0);
+
+  tl.to(heroPanel, {
+    scale: 0.96,
+    opacity: 0.88,
+    duration: 0.55,
+    ease: 'none',
+  }, 0);
+
+  // Phase 2 (0.45→0.70): dark content fades in as dome reaches top
+  tl.to('.dark-info__logo', {
     opacity: 1,
-    duration: 0.2,
-  }, 0.5)
-  .to('.dark-info__content', {
+    duration: 0.12,
+    ease: 'power2.out',
+  }, 0.45);
+
+  tl.to('.dark-info__content', {
     opacity: 1,
     y: 0,
-    duration: 0.25,
-  }, 0.55)
-  .to('.dark-info__stats .stat-inline', {
+    duration: 0.15,
+    ease: 'power2.out',
+  }, 0.48);
+
+  tl.to('.dark-info__stats .stat-inline', {
     opacity: 1,
     y: 0,
-    stagger: 0.08,
-    duration: 0.2,
-  }, 0.6)
-  .to('.dark-info__play-btn', {
+    stagger: 0.06,
+    duration: 0.12,
+    ease: 'power2.out',
+  }, 0.55);
+
+  tl.to('.dark-info__play-btn', {
     opacity: 1,
     scale: 1,
-    duration: 0.2,
-  }, 0.65)
-  // Hold dark section visible (reading time)
-  .to({}, { duration: 1.0 }, 0.8);
+    duration: 0.12,
+    ease: 'back.out(1.5)',
+  }, 0.58);
+
+  tl.to('.dark-info__section-label', {
+    opacity: 1,
+    duration: 0.1,
+  }, 0.62);
+
+  tl.to('.dark-info__scroll-indicator', {
+    opacity: 1,
+    duration: 0.1,
+  }, 0.62);
+
+  // Phase 3 (0.70→1.0): hold — reading time, no movement
+  tl.to({}, { duration: 0.30 }, 0.70);
 }
 
 /**

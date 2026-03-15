@@ -28,7 +28,7 @@ html {
 }
 
 body {
-  background: var(--color-bg-dark);
+  background: #FFFFFF;
   color: var(--color-text-primary);
   font-family: var(--font-primary);
   font-weight: var(--fw-regular);

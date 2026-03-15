@@ -63,23 +63,6 @@
   pointer-events: none;
 }
 
-/* ── Sphere glow — warm amber bloom from upper-left quadrant ── */
-.hero__sphere-wrap::after {
-  content: '';
-  position: absolute;
-  top: 5%;
-  left: 10%;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(232, 160, 48, 0.15) 0%,
-    rgba(200, 120, 10, 0.06) 40%,
-    transparent 70%
-  );
-  pointer-events: none;
-}
-
 /* Nav overlay sphere — glow effect behind canvas */
 .nav-overlay__sphere::before {
   content: '';

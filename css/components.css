@@ -58,15 +58,16 @@
 .hero__heading {
   font-size: var(--fs-heading);
   font-weight: var(--fw-light);
-  line-height: var(--lh-heading);
-  letter-spacing: var(--ls-heading);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
   color: #9A9A9A;
-  max-width: 550px;
+  max-width: 520px;
 }
 
 .hero__heading strong {
   font-weight: var(--fw-bold);
   color: #1A0503;
+  display: block;
 }
 
 .hero__tag {
@@ -74,27 +75,30 @@
   color: var(--color-text-secondary);
   white-space: nowrap;
   flex-shrink: 0;
+  padding-top: 2px;
+  min-width: 90px;
 }
 
 .hero__body {
-  font-size: var(--fs-body);
+  font-size: 13px;
   color: #666666;
-  line-height: var(--lh-body);
-  max-width: 340px;
+  line-height: 1.6;
+  max-width: 260px;
 }
 
 /* ── Partner Logos ── */
 .partner-logo {
   display: flex;
   align-items: center;
-  color: #BBBBBB;
-  opacity: 0.7;
+  color: rgba(0,0,0,0.22);
+  opacity: 1;
 }
 
 .partner-logo--text {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   font-weight: var(--fw-medium);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
+  color: rgba(0,0,0,0.22);
 }
 
 .partner-logo--dark {
@@ -102,7 +106,7 @@
 }
 
 .partner-logo svg {
-  height: 18px;
+  height: 16px;
   width: auto;
 }
 
@@ -112,6 +116,9 @@
   font-weight: var(--fw-medium);
   line-height: 1.4;
   color: #FFFFFF;
+  max-width: 480px;
+  position: relative;
+  z-index: 1;
 }
 
 .dark-info__rule {
@@ -157,7 +164,7 @@
 
 .dark-info__play-btn {
   position: absolute;
-  left: 55%;
+  left: 62%;
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;

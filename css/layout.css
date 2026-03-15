@@ -17,10 +17,8 @@
 .white-panel {
   position: relative;
   background: var(--color-panel-white);
-  border-radius: var(--panel-radius);
-  width: calc(100% - 4rem);
-  max-width: var(--panel-max-width);
-  min-height: calc(100vh - 4rem);
+  width: 100%;
+  min-height: 100vh;
   padding: var(--panel-padding-y) var(--panel-padding-x);
   overflow: hidden;
   display: flex;
@@ -119,24 +117,19 @@
   position: relative;
 }
 
-/* Dark reveal layer — slides up from bottom over the white panel */
+/* Dark reveal layer — rounded card that peeks from the bottom of the hero,
+   then rises on scroll to become the Page 1 (About) section.
+   NOT a 3D sphere — just a CSS border-radius panel. */
 .hero__dark-reveal {
   position: absolute;
-  left: 0;
-  right: 0;
   bottom: 0;
-  height: 100%;
+  left: 2.5%;
+  right: 2.5%;
+  height: 46%;
+  border-radius: 200px 200px 28px 28px;
+  background: #1A0500;
   z-index: 3;
-  background:
-    radial-gradient(ellipse at 70% 50%, rgba(160, 82, 26, 0.08) 0%, transparent 50%),
-    #1A0503;
-  display: flex;
-  align-items: center;
-  padding: var(--space-2xl) var(--panel-padding-x);
-  padding-left: calc(var(--sidebar-width) + var(--panel-padding-x));
   overflow: hidden;
-  border-radius: 2rem 2rem 0 0;
-  transform: translateY(100%);
   will-change: transform;
 }
 
@@ -151,14 +144,12 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: flex-start;
   text-align: left;
+  margin-left: 44%;
+  max-width: 50%;
   padding: 0 var(--space-lg);
-  padding-top: 2vh;
+  margin-top: 8vh;
   gap: var(--space-md);
-  margin-left: 42%;
-  max-width: 52%;
-  flex: 1;
 }
 
 .hero__info-row {
@@ -166,7 +157,7 @@
   flex-direction: row;
   align-items: flex-start;
   gap: var(--space-lg);
-  margin-top: var(--space-lg);
+  margin-top: var(--space-md);
   text-align: left;
   width: 100%;
 }
@@ -174,24 +165,8 @@
 .hero__partners {
   display: flex;
   align-items: center;
-  gap: var(--space-lg);
-  margin-top: var(--space-lg);
-}
-
-.hero__sphere-wrap {
-  position: absolute;
-  left: 50%;
-  bottom: -60vh;
-  transform: translateX(-50%);
-  width: 110vh;
-  height: 110vh;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.hero__sphere-wrap canvas {
-  width: 100%;
-  height: 100%;
+  gap: 1.75rem;
+  margin-top: 2rem;
 }
 
 .hero__scroll-indicator {
@@ -208,19 +183,22 @@
   position: absolute;
   right: 0;
   top: 0;
-  width: 55%;
+  width: 70%;
   height: 100%;
 }
 
 .dark-info__content {
-  position: relative;
+  position: absolute;
   z-index: 1;
-  max-width: 50%;
+  max-width: 46%;
+  top: 50%;
+  left: calc(var(--sidebar-width) + var(--panel-padding-x));
+  transform: translateY(-50%);
 }
 
-.dark-info__logo {
+.hero__dark-reveal .dark-info__logo {
   position: absolute;
-  top: var(--space-lg);
+  top: 2.5rem;
   left: calc(var(--sidebar-width) + var(--panel-padding-x));
   z-index: 2;
   color: #FFFFFF;
@@ -234,6 +212,18 @@
   margin-top: var(--space-lg);
 }
 
+.dark-info__section-label {
+  position: absolute;
+  bottom: var(--space-lg);
+  left: calc(var(--sidebar-width) + var(--space-sm));
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.05em;
+}
+
 .dark-info__scroll-indicator {
   position: absolute;
   bottom: var(--space-md);
@@ -242,9 +232,13 @@
 }
 
 /* ── Be Your Own Bank Section ── */
-.section--bank {
+.section--dark.section--bank {
   padding: var(--space-2xl) var(--panel-padding-x);
-  padding-left: calc(var(--sidebar-width) + var(--space-lg));
+  padding-left: calc(var(--sidebar-width) + var(--panel-padding-x));
+  border-radius: 120px 120px 0 0;
+  position: relative;
+  z-index: 4;
+  overflow: hidden;
 }
 
 .bank__layout {
@@ -483,8 +477,8 @@
   }
 
   .white-panel {
-    width: calc(100% - 2rem);
-    min-height: calc(100vh - 2rem);
+    width: 100%;
+    min-height: 100vh;
     padding: var(--space-md) var(--space-md);
   }
 

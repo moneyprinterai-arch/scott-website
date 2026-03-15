@@ -8,6 +8,7 @@ import {
 } from './animations.js';
 import { initNavigation } from './navigation.js';
 import { initStatsRing } from './stats-ring.js';
+import { createHalftone } from './halftone.js';
 
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -17,10 +18,11 @@ gsap.registerPlugin(ScrollTrigger);
 window.__gsap = gsap;
 window.__ScrollTrigger = ScrollTrigger;
 
-// Track sphere instances for visibility control
+// Track instances for visibility control
 const spheres = {};
+let halftoneInstance = null;
 
-// Lazy-load sphere module (pulls in Three.js ~500KB)
+// Lazy-load sphere module (only needed for nav overlay)
 let createCopperSphere = null;
 function loadSphereModule() {
   if (createCopperSphere) return Promise.resolve(createCopperSphere);
@@ -122,64 +124,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   ScrollTrigger.refresh();
 
-  // ── Defer 3D spheres — load after first paint ──
-  requestAnimationFrame(() => {
-    loadSphereModule().then(create => {
-      const heroCanvas = document.getElementById('hero-sphere');
-      if (heroCanvas) {
-        spheres.hero = create(heroCanvas, {
-          rows: 200,
-          colsBase: 440,
-          radius: 1,
-          rotationSpeed: 0.0005,
-          waveAmplitude: 0.018,
-          waveSpeed: 0.8,
-          cameraZ: 2.2,
-          lightDirection: [-1.0, 0.8, 0.5],
-          basePointSize: 2.8,
-          useAdditiveBlending: false,
+  // ── 2D Halftone texture for dark info panel (replaces 3D sphere) ──
+  const darkCanvas = document.getElementById('dark-mesh-canvas');
+  if (darkCanvas) {
+    halftoneInstance = createHalftone(darkCanvas);
+
+    // Pause when off-screen
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!halftoneInstance) return;
+          if (entry.isIntersecting) {
+            halftoneInstance.resume();
+          } else {
+            halftoneInstance.pause();
+          }
         });
-      }
-
-      const darkCanvas = document.getElementById('dark-mesh-canvas');
-      if (darkCanvas) {
-        spheres.dark = create(darkCanvas, {
-          rows: 140,
-          colsBase: 300,
-          radius: 1,
-          rotationSpeed: 0.0006,
-          waveAmplitude: 0.02,
-          waveSpeed: 1.0,
-          cameraZ: 2.35,
-          lightDirection: [-1.0, 0.8, 0.5],
-          basePointSize: 2.4,
-          useAdditiveBlending: true,
-        });
-      }
-
-      // Pause spheres when off-screen
-      if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            const key = entry.target.dataset.sphereKey;
-            if (!key || !spheres[key]) return;
-            if (entry.isIntersecting) {
-              spheres[key].resume();
-            } else {
-              spheres[key].pause();
-            }
-          });
-        }, { threshold: 0.05 });
-
-        if (heroCanvas) {
-          heroCanvas.dataset.sphereKey = 'hero';
-          observer.observe(heroCanvas);
-        }
-        if (darkCanvas) {
-          darkCanvas.dataset.sphereKey = 'dark';
-          observer.observe(darkCanvas);
-        }
-      }
-    });
-  });
+      }, { threshold: 0.05 });
+      observer.observe(darkCanvas);
+    }
+  }
 });
