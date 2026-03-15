@@ -1,8 +1,7 @@
 /**
  * Premium halftone shader — WebGL fullscreen plane with custom GLSL.
- * Renders copper/bronze lozenge-shaped dots on a dark background,
- * arranged in flowing curved rows that suggest a 3D metallic surface.
- * Dark gaps between dots create luxurious depth.
+ * Renders copper/bronze halftone dots driven by a single broad fold
+ * manifold, producing a continuous metallic-silk flow.
  *
  * API: createHalftone(canvas) → { pause, resume, destroy }
  */
@@ -18,7 +17,7 @@ void main() {
 `;
 
 /* ═══════════════════════════════════════════════════════════════════
-   FRAGMENT SHADER — halftone dot grid with metallic lighting
+   FRAGMENT SHADER — single-flow metallic silk with halftone texture
    ═══════════════════════════════════════════════════════════════════ */
 const FRAG = /* glsl */ `
 precision highp float;
@@ -88,33 +87,30 @@ float snoise(vec3 v) {
   return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
 }
 
-/* ── Height field — draped metallic cloth with wind motion ── */
+/* ── Height field — one broad continuous scarf fold ── */
 float heightField(vec2 p, float t) {
-  // Silk-in-wind motion: slow drift + gentle oscillation
-  float drift = t * 0.035;
-  float breath = sin(t * 0.5) * 0.15 + sin(t * 0.3 + 0.7) * 0.08;
-  vec2 dp = p + vec2(drift + breath, drift * 0.6 + breath * 0.4);
+  // Ultra-slow directional drift — shape barely moves
+  float drift = t * 0.012;
+  vec2 dp = p + vec2(drift, drift * 0.3);
 
-  // Minimal noise — just enough to break perfect symmetry
-  float warp = snoise(vec3(dp * 0.35, t * 0.02)) * 0.05;
+  // Micro-imperfection noise only — no visible warp
+  float warp = snoise(vec3(dp * 0.15, t * 0.005)) * 0.012;
 
-  // Deep structural folds — like creases in draped metal cloth
-  float fold1 = sin(dp.y * 2.2 + dp.x * 0.6 + warp * 2.0) * 0.32;
-  float fold2 = sin(dp.x * 1.6 - dp.y * 0.5 + warp * 1.2) * 0.14;
-  float fold3 = sin((dp.x + dp.y) * 1.1 + warp) * 0.08;
+  // ONE dominant broad fold — the main scarf drape
+  float fold1 = sin(dp.y * 0.8 + dp.x * 0.5 + warp) * 0.45;
+  // One very subtle secondary for depth, not a competing direction
+  float fold2 = sin(dp.x * 0.5 - dp.y * 0.25) * 0.06;
 
-  return fold1 + fold2 + fold3;
+  return fold1 + fold2;
 }
 
-/* Fast height for normal offsets */
+/* Fast height for normal offsets — same structure, no noise */
 float heightFast(vec2 p, float t) {
-  float drift = t * 0.035;
-  float breath = sin(t * 0.5) * 0.15 + sin(t * 0.3 + 0.7) * 0.08;
-  vec2 dp = p + vec2(drift + breath, drift * 0.6 + breath * 0.4);
-  float fold1 = sin(dp.y * 2.2 + dp.x * 0.6) * 0.32;
-  float fold2 = sin(dp.x * 1.6 - dp.y * 0.5) * 0.14;
-  float fold3 = sin((dp.x + dp.y) * 1.1) * 0.08;
-  return fold1 + fold2 + fold3;
+  float drift = t * 0.012;
+  vec2 dp = p + vec2(drift, drift * 0.3);
+  float fold1 = sin(dp.y * 0.8 + dp.x * 0.5) * 0.45;
+  float fold2 = sin(dp.x * 0.5 - dp.y * 0.25) * 0.06;
+  return fold1 + fold2;
 }
 
 /* ── Copper tone ramp — chained smoothstep ── */
@@ -149,104 +145,99 @@ void main() {
   float aspect = uResolution.x / uResolution.y;
 
   vec2 p = (uv - 0.5) * vec2(aspect, 1.0);
-  p += uMouse * 0.006;
+  p += uMouse * 0.003;  // nearly imperceptible mouse parallax
 
   float t = uTime;
 
-  /* ── 1. Surface height & normals (for lighting) ── */
-  float eps = 0.006;
+  /* ── 1. Surface height & normals — smooth, low-frequency ── */
+  float eps = 0.012;  // larger sample distance = smoother normals
   float hc = heightField(p, t);
   float hx = heightFast(p + vec2(eps, 0.0), t);
   float hy = heightFast(p + vec2(0.0, eps), t);
 
-  float nStr = 1.10;
+  float nStr = 0.70;  // reduced for silky surface
   vec3 N = normalize(vec3(
     -(hx - hc) / eps * nStr,
     -(hy - hc) / eps * nStr,
     1.0
   ));
 
-  /* ── 2. Simple metallic lighting — key light only ── */
+  /* ── 2. Slowly drifting key light — shimmer glides over stable folds ── */
   vec3 V = vec3(0.0, 0.0, 1.0);
-  vec3 L = normalize(vec3(0.5, 0.45, 0.65));
+
+  // Light direction drifts slowly — the reflection sweeps across the surface
+  float lightDrift = t * 0.06;
+  vec3 L = normalize(vec3(
+    0.45 + sin(lightDrift) * 0.12,
+    0.40 + cos(lightDrift * 0.7) * 0.08,
+    0.70
+  ));
   float NdotL = max(dot(N, L), 0.0);
   vec3 H = normalize(L + V);
   float NdotH = max(dot(N, H), 0.001);
 
-  // Anisotropic brush
-  float brushAngle = 0.08;
+  // Anisotropic brush aligned to scarf flow direction
+  // The dominant fold runs along (y*0.8 + x*0.5), tangent ~0.55 rad
+  float brushAngle = 0.55;
   vec3 T = normalize(vec3(cos(brushAngle), sin(brushAngle), 0.0));
   T = normalize(T - N * dot(T, N));
   vec3 B = cross(N, T);
-  float ax = 0.40, ay = 0.10;
+  float ax = 0.50, ay = 0.08;  // wide along flow, tight across = elongated highlights
   float TdotH = dot(T, H);
   float BdotH = dot(B, H);
   float ex = -((TdotH*TdotH)/(ax*ax) + (BdotH*BdotH)/(ay*ay)) / (NdotH*NdotH);
   float spec = exp(ex) * NdotL;
 
-  // Soft fill — barely there
-  vec3 Lf = normalize(vec3(-0.3, 0.0, 0.9));
-  float fillDiff = max(dot(N, Lf), 0.0) * 0.08;
+  // Very soft fill — atmospheric only
+  vec3 Lf = normalize(vec3(-0.25, 0.1, 0.95));
+  float fillDiff = max(dot(N, Lf), 0.0) * 0.04;
 
-  float lum = NdotL * 0.35 + spec * 0.65 + fillDiff;
+  // Mostly specular-driven — the reflection IS the material
+  float lum = NdotL * 0.25 + spec * 0.75 + fillDiff;
 
-  // Gentle midtone compression
-  lum = pow(max(0.0, lum), 1.1);
+  // Midtone compression
+  lum = pow(max(0.0, lum), 1.15);
 
-  /* ── 3. Compositional bias — right-heavy but not extreme ── */
-  float compX = smoothstep(-0.3, 0.6, p.x);
-  float compY = smoothstep(-0.4, 0.5, p.y);
-  float comp = mix(0.15, 1.0, compX * 0.6 + compY * 0.4);
+  /* ── 3. Compositional bias — shadow-led, right-heavy ── */
+  float compX = smoothstep(-0.35, 0.55, p.x);
+  float compY = smoothstep(-0.45, 0.45, p.y);
+  float comp = mix(0.08, 1.0, compX * 0.65 + compY * 0.35);
   lum *= comp;
 
-  /* ── 4. Warm glow — strong copper hotspot upper-right ── */
-  vec2 glowC = vec2(0.78, 0.72);
-  float glowD = length((uv - glowC) * vec2(0.7, 0.8));
-  lum += exp(-glowD * glowD * 1.8) * 0.18;
+  /* ── 4. One warm glow — single authored hotspot upper-right ── */
+  vec2 glowC = vec2(0.75, 0.68);
+  float glowD = length((uv - glowC) * vec2(0.65, 0.75));
+  lum += exp(-glowD * glowD * 2.2) * 0.12;
 
-  // Secondary broad fill glow — lights up more of the right half
-  vec2 glowC2 = vec2(0.60, 0.50);
-  float glowD2 = length((uv - glowC2) * vec2(0.6, 0.7));
-  lum += exp(-glowD2 * glowD2 * 1.5) * 0.08;
-
-  /* ── 5. Vignette — gentle, mostly fades far edges ── */
-  float vigD = length((uv - vec2(0.55, 0.50)) * vec2(0.70, 0.55));
-  float vignette = 1.0 - smoothstep(0.40, 1.0, vigD);
+  /* ── 5. Vignette — keeps most of frame dark ── */
+  float vigD = length((uv - vec2(0.55, 0.48)) * vec2(0.65, 0.50));
+  float vignette = 1.0 - smoothstep(0.35, 0.95, vigD);
   lum *= vignette;
 
   /* ── 6. Left-edge fade ── */
-  float leftFade = smoothstep(0.0, 0.20, uv.x);
+  float leftFade = smoothstep(0.0, 0.22, uv.x);
   lum *= leftFade;
 
   lum = clamp(lum, 0.0, 1.0);
 
-  /* ── 7. Halftone dot grid — round dots, dramatic curvature ── */
-  // Dense grid — tightly packed dots like reference
+  /* ── 7. Halftone dot grid — one coherent directional flow ── */
   float gridFreq = 110.0;
   vec2 gridScale = vec2(gridFreq, gridFreq / aspect);
   vec2 gridUV = uv * gridScale;
 
-  // Strong structural grid warp — dramatic curved rows from the folds
-  // This is NOT liquid — the folds are structural sine waves, not noise
-  float warpStr = 5.0;
+  // Gentle grid warp from the single fold — one set of curving rows
+  float warpStr = 3.0;
   gridUV.x += hc * warpStr;
-  gridUV.y += hc * warpStr * 0.75;
-
-  // Radial convergence — dots converge toward a focus for 3D drape feel
-  vec2 focus = vec2(0.62, 0.50);
-  vec2 toFocus = uv - focus;
-  float radDist = length(toFocus);
-  gridUV += toFocus * radDist * 3.5;
+  gridUV.y += hc * warpStr * 0.6;
+  // No radial convergence — one directional flow only
 
   // Cell coordinates
   vec2 cell = fract(gridUV) - 0.5;
 
-  // ROUND dots — Euclidean distance, NOT diamond/Manhattan
-  // Slight oval stretch (wider than tall) for organic quality
+  // ROUND dots with slight oval stretch
   float dist = length(cell * vec2(1.0, 1.15));
 
-  // Dot size driven by luminance — large in bright areas, tiny in dark
-  // In brightest areas dots nearly touch neighbors
+  // Dot size driven by luminance
   float dotRadius = smoothstep(0.01, 0.50, lum) * 0.46;
 
   // Anti-aliased edge
@@ -255,12 +246,12 @@ void main() {
   /* ── 8. Dot color — copper tone mapped from luminance ── */
   vec3 dotColor = copperTone(lum);
 
-  // Subtle specular sheen on brightest dots
-  float peak = pow(max(0.0, (lum - 0.60) / 0.40), 3.0);
-  dotColor += vec3(0.90, 0.72, 0.48) * peak * 0.12;
+  // Subtle champagne sheen on brightest dots
+  float peak = pow(max(0.0, (lum - 0.65) / 0.35), 3.0);
+  dotColor += vec3(0.85, 0.68, 0.42) * peak * 0.08;
 
   // ACES tone map
-  dotColor = ACESFilm(dotColor * 1.2);
+  dotColor = ACESFilm(dotColor * 1.1);
 
   /* ── 9. Output — dots are opaque copper, gaps are transparent ── */
   float alpha = dotMask * smoothstep(0.0, 0.16, uv.x);
@@ -322,7 +313,7 @@ export function createHalftone(canvasElement) {
   const resizeObs = new ResizeObserver(resize);
   resizeObs.observe(canvasElement);
 
-  /* ── Mouse tracking (damped) ── */
+  /* ── Mouse tracking (heavily damped) ── */
   const mouseT = { x: 0, y: 0 };
   const mouseC = { x: 0, y: 0 };
 
@@ -339,7 +330,7 @@ export function createHalftone(canvasElement) {
   let frame = 0;
 
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const timeSpeed = prefersReduced ? 0 : 0.014;
+  const timeSpeed = prefersReduced ? 0 : 0.006;
 
   function animate() {
     if (!running) return;
@@ -352,9 +343,9 @@ export function createHalftone(canvasElement) {
 
     uniforms.uTime.value += timeSpeed;
 
-    // Damped mouse interpolation
-    mouseC.x += (mouseT.x - mouseC.x) * 0.03;
-    mouseC.y += (mouseT.y - mouseC.y) * 0.03;
+    // Heavily damped mouse interpolation
+    mouseC.x += (mouseT.x - mouseC.x) * 0.015;
+    mouseC.y += (mouseT.y - mouseC.y) * 0.015;
     uniforms.uMouse.value.set(mouseC.x, mouseC.y);
 
     renderer.render(scene, camera);
